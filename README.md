@@ -46,7 +46,7 @@ team-repo/
 
 - [p5.js Reference](https://p5js.org/reference/)
 - [p5.js Examples](https://p5js.org/examples/)
-- [The Coding Train](https://thecodingtrain.com/) - Great tutorials
+- [The Coding Train](https://thecodingtrain.com/) 
 - [GitHub Education](https://education.github.com/)
 
 ## Instructor Notes
