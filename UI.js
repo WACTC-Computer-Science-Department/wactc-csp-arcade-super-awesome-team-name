@@ -8,7 +8,7 @@ function drawMenu(gm) {
   fill('#ffffff');
   textAlign(CENTER, CENTER);
   textSize(32);
-  text('Airsoft Weapons VS evil Balloons', width / 2, height / 3);
+  text('Airsoft Weapons VS Evil Balloons', width / 2, height / 3);
   textSize(16);
   text('Press SPACE or ENTER to start', width / 2, height / 2);
 
