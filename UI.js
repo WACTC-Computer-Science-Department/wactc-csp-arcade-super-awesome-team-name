@@ -45,5 +45,3 @@ function drawGameOver(gm) {
 
   // TODO: Add game over art, stats summary, etc.
 }
-
-// IM GAY
