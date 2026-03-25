@@ -40,7 +40,7 @@ class Enemy extends GameObject {
     this.health -= amount;
     if (this.health <= 0) {
       this.alive = false;
-    }0
+    }
   }
 
   // TODO: Add enemy-specific methods
