@@ -48,5 +48,10 @@ class pistolProjectile extends GameObject {
   constructor(x, y, dirX, dirY, speed, damage) {
     super(x, y, 15)
     this.speed = speed || 10
+    this.damage = damage || 2
+    this.color = 'FFA500'
+
+    //direction of the bullets
+    
     
     
