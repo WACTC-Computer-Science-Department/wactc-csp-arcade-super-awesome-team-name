@@ -61,3 +61,12 @@ class Player extends GameObject {
   // TODO: Add player-specific methods
   // Examples: shoot(), dash(), useAbility(), heal()
 }
+class SniperTower extends Player{
+  constructor(x, y) {
+    super(x, y);
+    this.image = null; // Placeholder for tower image
+    this.projectile = "Sniper";
+    this.range = 400;
+    this.fireRate = 180; // Frames between shots
+  }
+}

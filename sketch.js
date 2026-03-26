@@ -6,7 +6,7 @@
 let gm;  // GameManager instance
 
 function setup() {
-  createCanvas(800, 500);
+  createCanvas(800, 600);
   textFont('monospace');
   gm = new GameManager();
 }
