@@ -50,8 +50,10 @@ class pistolProjectile extends GameObject {
     this.speed = speed || 10
     this.damage = damage || 2
     this.color = 'FFA500'
-
-    //direction of the bullets
+let len = Math.sqrt(dirX * dirX + dirY * dirY);
+    if (len = 0){
+    
+    }
     
     
     
