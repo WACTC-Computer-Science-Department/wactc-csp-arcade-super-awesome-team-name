@@ -52,7 +52,10 @@ class pistolProjectile extends GameObject {
     this.color = 'FFA500'
 let len = Math.sqrt(dirX * dirX + dirY * dirY);
     if (len = 0){
-    
+    this.ve1X=(dirX/len)* this.speed
+    this.ve1X=(dirY/len)* this.speed
+          } else { 
+      
     }
     
     
