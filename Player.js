@@ -28,13 +28,7 @@ class Player extends GameObject {
     // Keep in bounds:
     // this.x = constrain(this.x, this.size, width - this.size);
     // this.y = constrain(this.y, this.size, height - this.size);
-    if (keyIsDown("1") || keyIsDown(49)) this.heldTower = "sniper";
-    if (keyIsDown("2") || keyIsDown(50)) this.heldTower = "pistol";
-    if (keyIsDown("3") || keyIsDown(51)) this.heldTower = "knife";
-    if (keyIsDown("4") || keyIsDown(52)) this.heldTower = "wall";
-    if (keyIsDown("5") || keyIsDown(53)) this.heldTower = "bigMoney";
-    }
-
+  }
   draw() {
     // TODO: Draw the player
     fill(this.color);
@@ -112,10 +106,9 @@ class SniperTower extends GameObject {
     let dirX = 1;
     let dirY = 0;
     
-    // Create sniper projectile (high damage, slow speed)
+    // Create sniper projectile (high damage)
     let p = new Projectile(this.x, this.y, dirX, dirY, 10, 5); // speed 10, damage 5
     p.owner = 'tower';
     projectiles.push(p);
   }
-}
 }

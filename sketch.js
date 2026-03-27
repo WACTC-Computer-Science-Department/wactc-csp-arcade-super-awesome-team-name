@@ -33,6 +33,13 @@ function keyPressed() {
   }
   // TODO: Add game-specific key controls
   // Example: if (key === ' ' && gm.gameState === 'playing') { gm.playerShoot(mouseX, mouseY); }
+  if (keyIsDown("1") || keyIsDown(49)) this.heldTower = "sniper";
+    if (keyIsDown("2") || keyIsDown(50)) this.heldTower = "pistol";
+    if (keyIsDown("3") || keyIsDown(51)) this.heldTower = "knife";
+    if (keyIsDown("4") || keyIsDown(52)) this.heldTower = "wall";
+    if (keyIsDown("5") || keyIsDown(53)) this.heldTower = "bigMoney";
+    
+
 }
 
 function mousePressed() {
