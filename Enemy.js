@@ -53,6 +53,28 @@ class Enemy extends GameObject {
 
 // TODO: Create enemy subclasses with different behaviors
 
+class ConeBalloon extends Enemy {
+  constructor(x, y) {
+    super(x, y, 8, 1);  // Slightly larger and a bit faster than Basicballoon
+    this.health = 10;
+    this.damage = 2;
+  }
+
+  draw() {
+    // Draw a cone-shaped balloon
+    fill(this.color);
+    // Draw triangle (cone)
+    triangle(
+      this.x, this.y - this.size, // top
+      this.x - this.size, this.y + this.size, // bottom left
+      this.x + this.size, this.y + this.size  // bottom right
+    );
+    // Draw a small ellipse at the base for the balloon knot
+    fill(80, 40, 0);
+    ellipse(this.x, this.y + this.size + 2, this.size / 2, this.size / 4);
+  }
+}
+
   class Fastballoon extends Enemy {
   constructor(x, y) {
     super(x, y, 8, 2);  
@@ -63,39 +85,74 @@ class Enemy extends GameObject {
      }
      move(){
       this.x -= this.speed
+      
+     }
+     draw(){
+      ellipse(this.x, this.y, this.size);
       randomNumber(0,5)
      }
  }
 
-//class Basicballoon extends Enemy{
- // constructor(x,y){
-  //  super(x,y, 8, 4)
-  //  this.image = null
-  //  this.health = 15
-  //  this.damage =
- // }
-// }
- //
-// class TankEnemy extends Enemy {
-//   constructor(x, y) {
-//     super(x, y, 20, 1);  // bigger, slower
-//     this.color = '#cc0000';
-//     this.health = 100;
-//     this.damage = 25;
-//   }
-// }
-//
-// class BossEnemy extends Enemy {
-//   constructor(x, y) {
-//     super(x, y, 30, 0.5);
-//     this.color = '#9900ff';
-//     this.health = 500;
-//     this.damage = 40;
-//     this.phase = 1;
-//   }
-//
-//   update() {
-//     super.update();  // call parent AI
-//     // Add boss-specific behavior based on this.phase
-//   }
-// }
+ class Basicballoon extends Enemy{
+   constructor(x,y){
+    super(x,y, 8, 1)
+    this.image = null
+    this.health = 15
+    this.damage = 1
+  }
+ update() {
+    this.x -= this.speed;
+    // Random vertical drift
+    if (randomNumber(0, 5) === 0) {
+      this.x += randomNumber(-2, 2);
+    }
+    if (this.x < -this.size) this.alive = false;
+  }
+  draw() {
+    fill(this.color);
+    ellipse(this.x, this.y, this.size * 2);
+  }
+}
+
+class bucketballoon extends Enemy{
+  constructor(x,y){
+    super(x,y, 8, 1)
+    this.image = null
+    this.health = 15
+    this.damage = 2
+  }
+  update() {
+    this.x -= this.speed;
+    // Random vertical drift
+    if (randomNumber(0, 5) === 0) {
+      this.x += randomNumber(-2, 2);
+    }       
+    if (this.x < -this.size) this.alive = false;
+  }
+  draw() {
+    fill(this.color);
+    ellipse(this.x, this.y, this.size * 2);
+  }
+}
+  
+ class BossEnemy extends Enemy {
+  constructor(x, y) {
+    super(x, y, 120, 0.1);  // Larger and slower than regular enemies
+    this.health = 500;
+    this.damage = 35;
+  }
+ 
+ update(){
+ this.x -= this.speed;
+    // Random vertical drift
+    if (randomNumber(0, 5) === 0) {
+      this.x += randomNumber(-2, 2);
+    }       
+    if (this.x < -this.size) this.alive = false;
+ } 
+ draw(){
+    fill(this.color);
+    ellipse(this.x, this.y, this.size * 2);
+  }
+ }
+    
