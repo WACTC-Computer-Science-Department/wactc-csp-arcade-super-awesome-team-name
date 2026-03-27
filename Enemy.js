@@ -58,8 +58,15 @@ class ConeBalloon extends Enemy {
     super(x, y, 8, 1);  // Slightly larger and a bit faster than Basicballoon
     this.health = 10;
     this.damage = 2;
+  } 
+move() {
+    this.x -= this.speed;
+    // Random vertical drift
+    if (randomNumber(0, 5) === 0) {
+      this.x += randomNumber(-2, 2);
+    }
+    if (this.x < -this.size) this.alive = false;
   }
-
   draw() {
     // Draw a cone-shaped balloon
     fill(this.color);
@@ -135,7 +142,7 @@ class bucketballoon extends Enemy{
   }
 }
   
- class BossEnemy extends Enemy {
+ class SCHERMBOSS extends Enemy {
   constructor(x, y) {
     super(x, y, 120, 0.1);  // Larger and slower than regular enemies
     this.health = 500;
