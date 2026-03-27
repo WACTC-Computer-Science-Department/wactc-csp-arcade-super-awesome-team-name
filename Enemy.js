@@ -7,9 +7,9 @@
 class Enemy extends GameObject {
   constructor(x, y, size, speed) {
     super(x, y, size || 12);
-    this.speed = speed || 2;
-    this.health = 30;
-    this.damage = 10;
+    this.speed = speed || 1;
+    this.health = 15;
+    this.damage = 5;
     this.color = '#ff4444';
 
     // TODO: Add additional enemy properties
@@ -52,17 +52,30 @@ class Enemy extends GameObject {
 // ============================================
 
 // TODO: Create enemy subclasses with different behaviors
-//
-// Example:
-// class FastEnemy extends Enemy {
-//   constructor(x, y) {
-//     super(x, y, 8, 4);  // smaller, faster
-//     this.color = '#ff8800';
-//     this.health = 15;
-//     this.damage = 5;
-//   }
+
+  class Fastballoon extends Enemy {
+  constructor(x, y) {
+    super(x, y, 8, 2);  
+    this.image = null
+    this.health = 5;
+    this.damage = 3;
+    this.speed = speed || 2;
+     }
+     move(){
+      this.x -= this.speed
+      randomNumber(0,5)
+     }
+ }
+
+//class Basicballoon extends Enemy{
+ // constructor(x,y){
+  //  super(x,y, 8, 4)
+  //  this.image = null
+  //  this.health = 15
+  //  this.damage =
+ // }
 // }
-//
+ //
 // class TankEnemy extends Enemy {
 //   constructor(x, y) {
 //     super(x, y, 20, 1);  // bigger, slower
