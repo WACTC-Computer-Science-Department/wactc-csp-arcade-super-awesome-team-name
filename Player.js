@@ -68,5 +68,25 @@ class SniperTower extends GameObject {
     this.projectile = "Sniper";
     this.range = 400;
     this.fireRate = 180; // Frames between shots
+    this.health = 3;
+    this.alive = true;  
+  }
+  update() {
+
+  }
+
+  draw() {
+    image (this.image, this.x, this.y, this.size * 2, this.size * 2);
+  }
+
+  takeDamage(amount) {
+    this.health -= amount;
+    if (this.health == 0) {
+      this.alive = false;
+    }
+  }
+
+  fire() {
+    
   }
 }
