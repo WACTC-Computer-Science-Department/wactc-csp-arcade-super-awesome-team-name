@@ -6,11 +6,10 @@
 class Player extends GameObject {
   constructor(x, y) {
     super(x, y, 15);  // size = 15
-    this.speed = 5;
-    this.health = 100;
-    this.maxHealth = 100;
+    this.health = 1;
     this.color = '#00ff88';
-
+    this.alive = true;
+    this.heldTower = null;
     // TODO: Add any additional properties your player needs
     // Examples: this.abilities = [], this.score = 0, this.direction = 0
   }
@@ -29,7 +28,12 @@ class Player extends GameObject {
     // Keep in bounds:
     // this.x = constrain(this.x, this.size, width - this.size);
     // this.y = constrain(this.y, this.size, height - this.size);
-  }
+    if (keyIsDown("1") || keyIsDown(49)) this.heldTower = "sniper";
+    if (keyIsDown("2") || keyIsDown(50)) this.heldTower = "pistol";
+    if (keyIsDown("3") || keyIsDown(51)) this.heldTower = "knife";
+    if (keyIsDown("4") || keyIsDown(52)) this.heldTower = "wall";
+    if (keyIsDown("5") || keyIsDown(53)) this.heldTower = "bigMoney";
+    }
 
   draw() {
     // TODO: Draw the player
@@ -56,4 +60,13 @@ class Player extends GameObject {
 
   // TODO: Add player-specific methods
   // Examples: shoot(), dash(), useAbility(), heal()
+}
+class SniperTower extends GameObject {
+  constructor(x, y, size) {
+    super(x, y);
+    this.image = null; // Placeholder for tower image
+    this.projectile = "Sniper";
+    this.range = 400;
+    this.fireRate = 180; // Frames between shots
+  }
 }
