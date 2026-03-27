@@ -69,24 +69,53 @@ class SniperTower extends GameObject {
     this.range = 400;
     this.fireRate = 180; // Frames between shots
     this.health = 3;
-    this.alive = true;  
+    this.alive = true;
+    this.cooldown = 0; // Add cooldown timer
   }
-  update() {
-
+  update(enemies, projectiles) {
+    this.cooldown--; // Decrease cooldown each frame
+    
+    if (this.cooldown <= 0) {
+      this.fire(projectiles);
+      this.cooldown = this.fireRate; // Reset cooldown
+    }
   }
 
   draw() {
-    image (this.image, this.x, this.y, this.size * 2, this.size * 2);
+    if (this.image) {
+      image(this.image, this.x, this.y, this.size * 2, this.size * 2);
+    } else {
+      // Placeholder if no image loaded
+      fill(100);
+      rect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+    }
+    
+    // Draw health bar
+    let barWidth = 30;
+    let healthPercent = this.health / 3; // Assuming max health is 3
+    fill(100);
+    rect(this.x - barWidth/2, this.y - this.size - 10, barWidth, 4);
+    fill(0, 255, 100);
+    rect(this.x - barWidth/2, this.y - this.size - 10, barWidth * healthPercent, 4);
   }
 
   takeDamage(amount) {
     this.health -= amount;
-    if (this.health == 0) {
+    if (this.health <= 0) {
+      this.health = 0;
       this.alive = false;
     }
   }
 
-  fire() {
+  fire(projectiles) {
+    // Shoot straight to the right
+    let dirX = 1;
+    let dirY = 0;
     
+    // Create sniper projectile (high damage, slow speed)
+    let p = new Projectile(this.x, this.y, dirX, dirY, 10, 5); // speed 10, damage 5
+    p.owner = 'tower';
+    projectiles.push(p);
   }
+}
 }
