@@ -107,7 +107,7 @@ class SniperTower extends GameObject {
     let dirY = 0;
     
     // Create sniper projectile (high damage)
-    let p = new Projectile(this.x, this.y, dirX, dirY, 10, 5); // speed 10, damage 5
+    let p = new Projectile(this.x, this.y, dirX, dirY, 10, 5);
     p.owner = 'tower';
     projectiles.push(p);
   }
