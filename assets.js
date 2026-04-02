@@ -33,7 +33,8 @@ schermBalloonImg,
 backgroundImg,
 gameOverImg,
 menuImg,
-cursorImg
+cursorImg,
+projectileImg;
 
 function loadAssets() {
   // Load your images here — they'll be ready before the game starts
@@ -49,6 +50,7 @@ function loadAssets() {
   bucketBalloonImg = loadImage('assets/bucketBalloonSprite.png');
   schermBalloonImg = loadImage('assets/schermBalloonSprite.png');
   cursorImg = loadImage('assets/cursorSprite.png');
+  projectileImg = loadImage('assets/projectileSprite.png');
   // backgroundImg = loadImage('assets/backgroundSprite.png');  // Add if image exists
   // gameOverImg = loadImage('assets/gameOverSprite.png');  // Add if image exists
   // menuImg = loadImage('assets/menuSprite.png');  // Add if image exists

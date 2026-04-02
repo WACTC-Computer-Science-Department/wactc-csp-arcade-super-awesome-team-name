@@ -11,7 +11,7 @@ function drawMenu(gm) {
   text('John Grace\'s Airsoft Weapons VS Scherm\'s Evil Balloons', width / 2, height / 3);
   textSize(16);
   text('Press SPACE or ENTER to start', width / 2, height / 2);
-
+  
   if (gm.highScore > 0) {
     text('High Score: ' + gm.highScore, width / 2, height * 2 / 3);
   }

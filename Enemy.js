@@ -56,6 +56,7 @@ class Enemy extends GameObject {
 class ConeBalloon extends Enemy {
   constructor(x, y) {
     super(x, y, 8, 1);  // Slightly larger and a bit faster than Basicballoon
+    this.image = typeof coneBalloonImg !== 'undefined' ? coneBalloonImg : null;
     this.health = 10;
     this.damage = 2;
   } 
@@ -68,6 +69,11 @@ move() {
     if (this.x < -this.size) this.alive = false;
   }
   draw() {
+    if (this.image) {
+      image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+      return;
+    }
+
     // Draw a cone-shaped balloon
     fill(this.color);
     // Draw triangle (cone)
@@ -84,26 +90,28 @@ move() {
 
   class Fastballoon extends Enemy {
   constructor(x, y) {
-    super(x, y, 8, 2);  
-    this.image = null
+    super(x, y, 8, 2);
+    this.image = typeof fastBalloonImg !== 'undefined' ? fastBalloonImg : null;
     this.health = 5;
     this.damage = 3;
-    this.speed = speed || 2;
-     }
-     move(){
-      this.x -= this.speed
-      
-     }
-     draw(){
-      ellipse(this.x, this.y, this.size);
-      randomNumber(0,5)
-     }
+    this.speed = this.speed || 2;
+  }
+  move(){
+    this.x -= this.speed;
+  }
+  draw(){
+    if (this.image) {
+      image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+      return;
+    }
+    ellipse(this.x, this.y, this.size);
+  }
  }
 
  class Basicballoon extends Enemy{
    constructor(x,y){
     super(x,y, 8, 1)
-    this.image = null
+    this.image = typeof basicBalloonImg !== 'undefined' ? basicBalloonImg : null;
     this.health = 15
     this.damage = 1
   }
@@ -116,6 +124,10 @@ move() {
     if (this.x < -this.size) this.alive = false;
   }
   draw() {
+    if (this.image) {
+      image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+      return;
+    }
     fill(this.color);
     ellipse(this.x, this.y, this.size * 2);
   }
@@ -124,7 +136,7 @@ move() {
 class bucketballoon extends Enemy{
   constructor(x,y){
     super(x,y, 8, 1)
-    this.image = null
+    this.image = typeof bucketBalloonImg !== 'undefined' ? bucketBalloonImg : null;
     this.health = 15
     this.damage = 2
   }
@@ -137,6 +149,10 @@ class bucketballoon extends Enemy{
     if (this.x < -this.size) this.alive = false;
   }
   draw() {
+    if (this.image) {
+      image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+      return;
+    }
     fill(this.color);
     ellipse(this.x, this.y, this.size * 2);
   }
@@ -145,6 +161,7 @@ class bucketballoon extends Enemy{
  class SCHERMBOSS extends Enemy {
   constructor(x, y) {
     super(x, y, 120, 0.1);  // Larger and slower than regular enemies
+    this.image = typeof schermBalloonImg !== 'undefined' ? schermBalloonImg : null;
     this.health = 500;
     this.damage = 35;
   }
@@ -158,6 +175,10 @@ class bucketballoon extends Enemy{
     if (this.x < -this.size) this.alive = false;
  } 
  draw(){
+    if (this.image) {
+      image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+      return;
+    }
     fill(this.color);
     ellipse(this.x, this.y, this.size * 2);
   }

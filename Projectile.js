@@ -35,6 +35,11 @@ class Projectile extends GameObject {
   }
 
   draw() {
+    if (typeof projectileImg !== 'undefined' && projectileImg) {
+      image(projectileImg, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+      return;
+    }
+
     fill(this.color);
     ellipse(this.x, this.y, this.size * 2);
   }
