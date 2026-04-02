@@ -79,14 +79,14 @@ class GameManager {
     // Use different Enemy subclasses for variety!
     //
     // Example:
-    // let side = floor(random(4));  // 0=top, 1=right, 2=bottom, 3=left
-    // let x, y;
-    // if (side === 0) { x = random(width); y = -20; }
-    // else if (side === 1) { x = width + 20; y = random(height); }
-    // else if (side === 2) { x = random(width); y = height + 20; }
-    // else { x = -20; y = random(height); }
-    //
-    // this.enemies.push(new Enemy(x, y));
+     let side = floor(random(4));  // 0=top, 1=right, 2=bottom, 3=left
+     let x, y;
+    if (side === 0) { x = random(width); y = -20; }
+    else if (side === 1) { x = width + 20; y = random(height); }
+     else if (side === 2) { x = random(width); y = height + 20; }
+     else { x = -20; y = random(height); }
+    
+     this.enemies.push(new Enemy(x, y));
   }
 
   checkCollisions() {
