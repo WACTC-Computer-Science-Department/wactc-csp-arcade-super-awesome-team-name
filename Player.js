@@ -76,17 +76,14 @@ class SniperTower extends GameObject {
   }
 
   draw() {
-    if (this.image) {
-      image(this.image, this.x, this.y, this.size * 2, this.size * 2);
-    } else {
-      // Placeholder if no image loaded
-      fill(100);
-      rect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
-    }
-    
+    // Draw sniper tower as a red square
+    noStroke();
+    fill('#ff0000');
+    rect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+
     // Draw health bar
     let barWidth = 30;
-    let healthPercent = this.health / 3; // Assuming max health is 3
+    let healthPercent = this.health / 3;
     fill(100);
     rect(this.x - barWidth/2, this.y - this.size - 10, barWidth, 4);
     fill(0, 255, 100);
@@ -108,6 +105,61 @@ class SniperTower extends GameObject {
     
     // Create sniper projectile (high damage)
     let p = new Projectile(this.x, this.y, dirX, dirY, 10, 5);
+    p.owner = 'tower';
+    projectiles.push(p);
+  }
+}
+
+class PistolTower extends GameObject {
+  constructor(x, y, size) {
+    super(x, y);
+    this.image = null; // Placeholder for tower image
+    this.projectile = "Pistol";
+    this.range = 400;
+    this.fireRate = 60; // Frames between shots
+    this.health = 5;
+    this.alive = true;
+    this.cooldown = 0; // Add cooldown timer
+  }
+  update(enemies, projectiles) {
+    this.cooldown--; // Decrease cooldown each frame
+    
+    if (this.cooldown <= 0) {
+      this.fire(projectiles);
+      this.cooldown = this.fireRate; // Reset cooldown
+    }
+  }
+
+  draw() {
+    // Draw pistol tower as a blue square
+    noStroke();
+    fill('#0000ff');
+    rect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+
+    // Draw health bar
+    let barWidth = 30;
+    let healthPercent = this.health / 5;
+    fill(100);
+    rect(this.x - barWidth/2, this.y - this.size - 10, barWidth, 4);
+    fill(0, 255, 100);
+    rect(this.x - barWidth/2, this.y - this.size - 10, barWidth * healthPercent, 4);
+  }
+
+  takeDamage(amount) {
+    this.health -= amount;
+    if (this.health <= 0) {
+      this.health = 0;
+      this.alive = false;
+    }
+  }
+
+  fire(projectiles) {
+    // Shoot straight to the right
+    let dirX = 1;
+    let dirY = 0;
+    
+    // Create pistol projectile (medium damage)
+    let p = new Projectile(this.x, this.y, dirX, dirY, 10, 3);
     p.owner = 'tower';
     projectiles.push(p);
   }

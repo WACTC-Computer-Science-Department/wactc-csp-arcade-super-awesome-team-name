@@ -44,19 +44,3 @@ class Projectile extends GameObject {
   //           class Laser extends Projectile (instant, no travel)
   //           class Spell extends Projectile (area damage)
 }
-class pistolProjectile extends GameObject { 
-  constructor(x, y, dirX, dirY, speed, damage) {
-    super(x, y, 15)
-    this.speed = speed || 10
-    this.damage = damage || 2
-    this.color = 'FFA500'
-let len = Math.sqrt(dirX * dirX + dirY * dirY);
-    if (len = 0){
-    this.ve1X=(dirX/len)* this.speed
-    this.ve1X=(dirY/len)* this.speed
-          } else { 
-      
-    }
-    
-    
-    
