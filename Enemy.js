@@ -59,15 +59,16 @@ class ConeBalloon extends Enemy {
     this.image = typeof coneBalloonImg !== 'undefined' ? coneBalloonImg : null;
     this.health = 10;
     this.damage = 2;
-  } 
-move() {
+  }
+
+  update() {
     this.x -= this.speed;
-    // Random vertical drift
     if (randomNumber(0, 5) === 0) {
-      this.x += randomNumber(-2, 2);
+      this.y += randomNumber(-2, 2);
     }
     if (this.x < -this.size) this.alive = false;
   }
+
   draw() {
     if (this.image) {
       image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
@@ -94,12 +95,17 @@ move() {
     this.image = typeof fastBalloonImg !== 'undefined' ? fastBalloonImg : null;
     this.health = 5;
     this.damage = 3;
-    this.speed = this.speed || 2;
   }
-  move(){
+
+  update() {
     this.x -= this.speed;
+    if (randomNumber(0, 5) === 0) {
+      this.y += randomNumber(-1, 1);
+    }
+    if (this.x < -this.size) this.alive = false;
   }
-  draw(){
+
+  draw() {
     if (this.image) {
       image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
       return;
