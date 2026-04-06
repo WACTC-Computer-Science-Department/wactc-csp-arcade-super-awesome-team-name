@@ -163,3 +163,10 @@ class PistolTower extends GameObject {
     projectiles.push(p);
   }
 }
+Class Bigmoney extends GameObject {
+  constructor(x,y) {
+  super(x,y,15);
+  this.health(2);
+  this.image =
+  
+}
