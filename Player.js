@@ -174,10 +174,38 @@ class PistolTower extends GameObject {
     projectiles.push(p);
   }
 }
-Class Bigmoney extends GameObject {
+class Bigmoney extends GameObject {
   constructor(x,y) {
   super(x,y,15);
-  this.health(2);
-  this.image =
-  
+  this.health = 2;
+  this.image = typeof bigmoneyImg !== 'undefined' ? bigmoneyImg : null;
+  }
+  update() {
+    // Move left at a constant speed
+    this.x -= 1; // Adjust speed as needed
+  }
+  draw() {
+    if (this.image) {
+      image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+    } else {
+      fill(this.color);
+      ellipse(this.x, this.y, this.size * 2);
+    }
+
+    // Draw health bar
+    let barWidth = 30;
+    let healthPercent = this.health / 2;
+    fill(100);
+    rect(this.x - barWidth/2, this.y - this.size - 10, barWidth, 4);
+    fill(255, 255, 0);
+    rect(this.x - barWidth/2, this.y - this.size - 10, barWidth * healthPercent, 4);
+  }
+
+  takeDamage(amount) {
+    this.health -= amount;
+    if (this.health <= 0) {
+      this.health = 0;
+      this.alive = false;
+    }
+  }
 }
