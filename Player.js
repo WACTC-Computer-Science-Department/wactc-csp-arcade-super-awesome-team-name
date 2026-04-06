@@ -30,15 +30,10 @@ class Player extends GameObject {
     // this.y = constrain(this.y, this.size, height - this.size);
   }
   draw() {
-    // Draw the player as an image if available, otherwise fallback to circle
-    if (typeof swordImg !== 'undefined' && swordImg) {
       image(swordImg, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
-    } else {
-      fill(this.color);
-      ellipse(this.x, this.y, this.size * 2);
-    }
+   
 
-    // Draw health bar above player
+    // Draw health bar
     let barWidth = 30;
     let healthPercent = this.health / (this.maxHealth || 1);
     fill(100);
@@ -80,13 +75,7 @@ class SniperTower extends GameObject {
   }
 
   draw() {
-    if (this.image) {
       image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
-    } else {
-      noStroke();
-      fill('#ff0000');
-      rect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
-    }
 
     // Draw health bar
     let barWidth = 30;
@@ -208,4 +197,23 @@ class Bigmoney extends GameObject {
       this.alive = false;
     }
   }
+  this.health(2);
+  this.image =
+  this.alive = true;
 }
+update() {
+
+
+
+
+
+
+
+  
+  }
+  takeDamage(amount) {
+    this.health -= amount;
+    if (this.health <= 0) {
+      this.health = 0;
+      this.alive = false;
+    }
