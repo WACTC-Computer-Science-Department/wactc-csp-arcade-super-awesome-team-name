@@ -34,7 +34,6 @@ class Projectile extends GameObject {
     }
   }
 
-<<<<<<< HEAD
   draw() {
     if (typeof projectileImg !== 'undefined' && projectileImg) {
       image(projectileImg, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
@@ -44,24 +43,9 @@ class Projectile extends GameObject {
     fill(this.color);
     ellipse(this.x, this.y, this.size * 2);
   }
-=======
->>>>>>> c47f78da5506bb99df3508cd049d26dc1599653f
 
   // TODO: Create projectile subclasses for variety
   // Examples: class Missile extends Projectile (homing)
   //           class Laser extends Projectile (instant, no travel)
   //           class Spell extends Projectile (area damage)
-}
-class pistolProjectile extends Projectile {
-  constructor(x, y, dirX, dirY, speed, damage) {
-    super(x, y, dirX, dirY, speed, damage);
-    this.size = 15;
-    this.speed = speed || 10;
-    this.damage = damage || 2;
-  }
-draw() {    
-  fill(this.color);
-   ellipse(this.x, this.y, this.size * 2);
-  }
-
 }
