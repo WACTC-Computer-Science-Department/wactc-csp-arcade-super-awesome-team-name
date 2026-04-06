@@ -168,5 +168,21 @@ Class Bigmoney extends GameObject {
   super(x,y,15);
   this.health(2);
   this.image =
-  
+  this.alive = true;
 }
+update() {
+
+
+
+
+
+
+
+  
+  }
+  takeDamage(amount) {
+    this.health -= amount;
+    if (this.health <= 0) {
+      this.health = 0;
+      this.alive = false;
+    }
