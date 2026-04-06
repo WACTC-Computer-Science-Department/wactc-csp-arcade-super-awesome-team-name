@@ -34,18 +34,6 @@ class Projectile extends GameObject {
     }
   }
 
-<<<<<<< HEAD
-  draw() {
-    if (typeof projectileImg !== 'undefined' && projectileImg) {
-      image(projectileImg, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
-      return;
-    }
-
-    fill(this.color);
-    ellipse(this.x, this.y, this.size * 2);
-  }
-=======
->>>>>>> c47f78da5506bb99df3508cd049d26dc1599653f
 
   // TODO: Create projectile subclasses for variety
   // Examples: class Missile extends Projectile (homing)
