@@ -30,7 +30,7 @@ function draw() {
 }
 
 function keyPressed() {
-  if (window.gm.gameState === 'menu' && (key === ' ' || keyCode === ENTER)) {
+  if (window.gm.gameState === 'menu' && (key === SPACEBAR || keyCode === ENTER)) {
     window.gm.startGame();
   } else if (window.gm.gameState === 'gameover' && (key === 'r' || key === 'R')) {
     window.gm.gameState = 'menu';
