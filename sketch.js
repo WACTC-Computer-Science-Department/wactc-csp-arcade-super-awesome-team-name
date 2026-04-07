@@ -12,28 +12,28 @@ function preload() {
 function setup() {
   createCanvas(800, 600);
   textFont('monospace');
-  gm = new GameManager();
+  window.gm = new GameManager();
 }
 
 function draw() {
   background('#1a1a2e');
 
-  if (gm.gameState === 'menu') {
-    drawMenu(gm);
-  } else if (gm.gameState === 'playing') {
-    gm.update();
-    gm.draw();
-    drawHUD(gm);
-  } else if (gm.gameState === 'gameover') {
-    drawGameOver(gm);
+  if (window.gm.gameState === 'menu') {
+    drawMenu(window.gm);
+  } else if (window.gm.gameState === 'playing') {
+    window.gm.update();
+    window.gm.draw();
+    drawHUD(window.gm);
+  } else if (window.gm.gameState === 'gameover') {
+    drawGameOver(window.gm);
   }
 }
 
 function keyPressed() {
-  if (gm.gameState === 'menu' && (key === ' ' || keyCode === ENTER)) {
-    gm.startGame();
-  } else if (gm.gameState === 'gameover' && (key === 'r' || key === 'R')) {
-    gm.gameState = 'menu';
+  if (window.gm.gameState === 'menu' && (key === ' ' || keyCode === ENTER)) {
+    window.gm.startGame();
+  } else if (window.gm.gameState === 'gameover' && (key === 'r' || key === 'R')) {
+    window.gm.gameState = 'menu';
   }
   // TODO: Add game-specific key controls
   // Example: if (key === ' ' && gm.gameState === 'playing') { gm.playerShoot(mouseX, mouseY); }
@@ -47,7 +47,7 @@ function keyPressed() {
 }
 
 function mousePressed() {
-  if (gm.gameState === 'playing') {
+  if (window.gm.gameState === 'playing') {
     gm.playerShoot(mouseX, mouseY);
   }
 }

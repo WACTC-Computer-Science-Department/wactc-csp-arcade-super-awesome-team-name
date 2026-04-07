@@ -11,23 +11,22 @@ class Enemy extends GameObject {
     this.health = 15;
     this.damage = 5;
     this.color = '#ff4444';
+    this.target = window.gm.player;
 
     // TODO: Add additional enemy properties
     // Examples: this.aiType = 'chase', this.target = null
   }
 
   update() {
-    // TODO: Add AI behavior
-    // Example: Move toward the player
-    //
-    // To chase a target:
-    // let dx = target.x - this.x;
-    // let dy = target.y - this.y;
-    // let distance = dist(this.x, this.y, target.x, target.y);
-    // if (distance > 0) {
-    //   this.x += (dx / distance) * this.speed;
-    //   this.y += (dy / distance) * this.speed;
-    // }
+    if (this.target) {
+      let dx = this.target.x - this.x;
+      let dy = this.target.y - this.y;
+      let distance = dist(this.x, this.y, this.target.x, this.target.y);
+      if (distance > 0) {
+        this.x += (dx / distance) * this.speed;
+        this.y += (dy / distance) * this.speed;
+      }
+    }
   }
 
   draw() {
