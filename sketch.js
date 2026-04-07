@@ -10,7 +10,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(1000, 400);
   textFont('monospace');
   window.gm = new GameManager();
 }
