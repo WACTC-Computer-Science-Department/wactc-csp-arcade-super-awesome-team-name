@@ -17,8 +17,12 @@ class GameManager {
     this.gameState = 'menu';  // 'menu', 'playing', 'gameover'
   }
 
+  createPlayer() {
+    return new Player(width / 2, height / 2);
+  }
+
   startGame() {
-    this.player = new Player(width / 2, height / 2);
+    this.player = this.createPlayer();
     this.enemies = [];
     this.projectiles = [];
     this.score = 0;
