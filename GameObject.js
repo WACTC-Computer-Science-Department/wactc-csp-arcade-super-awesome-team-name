@@ -27,12 +27,20 @@ class GameObject {
   // Check if this object overlaps with another GameObject
   collidesWith(other) {
     if (!this.alive || !other.alive) return false;
-    let d = dist(this.x, this.y, other.x, other.y);
+    // Use p5.js dist() if available, otherwise fallback to manual calculation
+    let d;
+    if (typeof dist === "function") {
+      d = dist(this.x, this.y, other.x, other.y);
+    } else {
+      const dx = this.x - other.x;
+      const dy = this.y - other.y;
+      d = Math.sqrt(dx * dx + dy * dy);
+    }
     return d < this.size + other.size;
   }
 
   // Check if this object is off-screen
-  isOffScreen() {
+  isOffScreen(width, height) {
     return (
       this.x < -this.size ||
       this.x > width + this.size ||
@@ -41,6 +49,14 @@ class GameObject {
     );
   }
 
-  // TODO: Add any shared methods your game needs
-  // Examples: takeDamage(amount), respawn(), getCenter(), etc.
+  // Example shared method: take damage and possibly die
+  takeDamage(amount) {
+    // You can add a health property in subclasses if needed
+    if (typeof this.health === "number") {
+      this.health -= amount;
+      if (this.health <= 0) {
+        this.alive = false;
+      }
+    }
+  }
 }
