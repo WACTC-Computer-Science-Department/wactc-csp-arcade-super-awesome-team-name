@@ -64,6 +64,7 @@ class SniperTower extends GameObject {
     this.health = 3;
     this.alive = true;
     this.cooldown = 0; // Add cooldown timer
+    this.cost = 50; // Cost of the sniper tower
   }
   update(enemies, projectiles) {
     this.cooldown--; // Decrease cooldown each frame
@@ -116,6 +117,7 @@ class PistolTower extends GameObject {
     this.health = 5;
     this.alive = true;
     this.cooldown = 0; // Add cooldown timer
+    this.cost = 30; // Cost of the pistol tower
   }
   update(enemies, projectiles) {
     this.cooldown--; // Decrease cooldown each frame
@@ -168,10 +170,11 @@ class Bigmoney extends GameObject {
   super(x,y,15);
   this.health = 2;
   this.image = typeof bigmoneyImg !== 'undefined' ? bigmoneyImg : null;
-  }
-  update() {
-    // Move left at a constant speed
-    this.x -= 1; // Adjust speed as needed
+  this.alive = true;
+  this.dropTimer = 300; // Timer for dropping money every 5 seconds
+  this.cooldown = 0; // Cooldown for dropping money 
+   this.moneyAmount = 10; // Amount of money dropped each time
+   this.cost = 50; // Cost of the Bigmoney tower
   }
   draw() {
     if (this.image) {
