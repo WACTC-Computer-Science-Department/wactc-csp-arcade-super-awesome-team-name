@@ -18,7 +18,11 @@ class GameManager {
 
   startGame() {
     // Note: width and height are p5.js global variables
-    this.player = new Player(width / 2, height / 2);
+    if (typeof width === 'number' && typeof height === 'number' && !isNaN(width) && !isNaN(height)) {
+      this.player = new Player(width / 2, height / 2);
+    } else {
+      this.player = null;
+    }
     this.enemies = [];
     this.projectiles = [];
     this.score = 0;
