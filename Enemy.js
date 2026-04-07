@@ -62,7 +62,7 @@ class ConeBalloon extends Enemy {
 
   update() {
     this.x -= this.speed;
-    if (randomNumber(0, 5) === 0) {
+    if (randomNumber(0, 5) === 5) {
       this.y += randomNumber(-2, 2);
     }
     if (this.x < -this.size) this.alive = false;
@@ -98,7 +98,7 @@ class ConeBalloon extends Enemy {
 
   update() {
     this.x -= this.speed;
-    if (randomNumber(0, 5) === 0) {
+    if (randomNumber(0, 5) === 5) {
       this.y += randomNumber(-1, 1);
     }
     if (this.x < -this.size) this.alive = false;
@@ -123,7 +123,7 @@ class ConeBalloon extends Enemy {
  update() {
     this.x -= this.speed;
     // Random vertical drift
-    if (randomNumber(0, 5) === 0) {
+    if (randomNumber(0, 5) === 5) {
       this.x += randomNumber(-2, 2);
     }
     if (this.x < -this.size) this.alive = false;
@@ -148,7 +148,7 @@ class bucketballoon extends Enemy{
   update() {
     this.x -= this.speed;
     // Random vertical drift
-    if (randomNumber(0, 5) === 0) {
+    if (randomNumber(0, 5) === 5) {
       this.x += randomNumber(-2, 2);
     }       
     if (this.x < -this.size) this.alive = false;
@@ -174,7 +174,7 @@ class bucketballoon extends Enemy{
  update(){
  this.x -= this.speed;
     // Random vertical drift
-    if (randomNumber(0, 5) === 0) {
+    if (randomNumber(0, 5) === 5) {
       this.x += randomNumber(-2, 2);
     }       
     if (this.x < -this.size) this.alive = false;
@@ -187,5 +187,4 @@ class bucketballoon extends Enemy{
     fill(this.color);
     ellipse(this.x, this.y, this.size * 2);
   }
- }
-    
+ } 

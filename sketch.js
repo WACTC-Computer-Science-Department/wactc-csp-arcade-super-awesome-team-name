@@ -37,17 +37,16 @@ function keyPressed() {
   }
   // TODO: Add game-specific key controls
   // Example: if (key === ' ' && gm.gameState === 'playing') { gm.playerShoot(mouseX, mouseY); }
-  if (keyIsDown("1") || keyIsDown(49)) this.heldTower = "sniper";
-    if (keyIsDown("2") || keyIsDown(50)) this.heldTower = "pistol";
-    if (keyIsDown("3") || keyIsDown(51)) this.heldTower = "knife";
-    if (keyIsDown("4") || keyIsDown(52)) this.heldTower = "wall";
-    if (keyIsDown("5") || keyIsDown(53)) this.heldTower = "bigMoney";
-    
+  if (keyIsDown("1") || keyIsDown(49)) window.gm.heldTower = "sniper";
+  if (keyIsDown("2") || keyIsDown(50)) window.gm.heldTower = "pistol";
+  if (keyIsDown("3") || keyIsDown(51)) window.gm.heldTower = "knife";
+  if (keyIsDown("4") || keyIsDown(52)) window.gm.heldTower = "wall";
+  if (keyIsDown("5") || keyIsDown(53)) window.gm.heldTower = "bigMoney";
 
 }
 
 function mousePressed() {
   if (window.gm.gameState === 'playing') {
-    gm.playerShoot(mouseX, mouseY);
+    window.gm.playerShoot(mouseX, mouseY);
   }
 }

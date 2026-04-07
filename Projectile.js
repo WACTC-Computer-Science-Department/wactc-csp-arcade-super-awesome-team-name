@@ -27,7 +27,7 @@ class Projectile extends GameObject {
   update() {
     this.x += this.velX;
     this.y += this.velY;
-
+    console.log(`Projectile at (${this.x.toFixed(2)}, ${this.y.toFixed(2)})`);
     // Remove if off-screen
     if (this.isOffScreen()) {
       this.alive = false;
