@@ -1,26 +1,26 @@
 class BigMoney extends GameObject {
-  constructor(x, y) {
-    super(x, y, 15);
-    this.health = 2;
-    this.image = typeof bigmoneyImg !== 'undefined' ? bigmoneyImg : null;
-    this.alive = true;
-    this.dropTimer = 300; // Timer for dropping money every 5 seconds
-    this.cooldown = 0; // Cooldown for dropping money
-    this.moneyAmount = 10; // Amount of money dropped each time
-    this.cost = 50; // Cost of the Bigmoney tower
+  constructor(x,y) {
+  super(x,y,15);
+  this.health = 2;
+  this.image = typeof bigmoneyImg !== 'undefined' ? bigmoneyImg : null;
+  this.alive = true;
+  this.dropTimer = 300; // Timer for dropping money every 5 seconds
+  this.cooldown = 0; // Cooldown for dropping money 
+   this.moneyAmount = 10; // Amount of money dropped each time
+   this.cost = 50; // Cost of the Bigmoney tower
   }
-
   draw() {
-    fill(0, 255, 0);
+    fill(0,255,0)
     square(50, 50, 40);
+    }
 
     // Draw health bar
     let barWidth = 30;
     let healthPercent = this.health / 2;
     fill(100);
-    rect(this.x - barWidth / 2, this.y - this.size - 10, barWidth, 4);
+    rect(this.x - barWidth/2, this.y - this.size - 10, barWidth, 4);
     fill(255, 255, 0);
-    rect(this.x - barWidth / 2, this.y - this.size - 10, barWidth * healthPercent, 4);
+    rect(this.x - barWidth/2, this.y - this.size - 10, barWidth * healthPercent, 4);
   }
 
   takeDamage(amount) {
@@ -31,9 +31,9 @@ class BigMoney extends GameObject {
     }
   }
 }
-
-class Smallmoney extends BigMoney {
-  constructor(x, y) {
-    super(x, y);
-  }
+class Smallmoney extends Bigmoney {
+  constructor(x,y,name)
+  var name
+  name = Smallmoney
+  super(x, y,15,15)
 }
