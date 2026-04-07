@@ -177,11 +177,8 @@ class Bigmoney extends GameObject {
    this.cost = 50; // Cost of the Bigmoney tower
   }
   draw() {
-    if (this.image) {
-      image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
-    } else {
-      fill(this.color);
-      ellipse(this.x, this.y, this.size * 2);
+    fill(0,255,0)
+    square(50, 50, 40);
     }
 
     // Draw health bar
