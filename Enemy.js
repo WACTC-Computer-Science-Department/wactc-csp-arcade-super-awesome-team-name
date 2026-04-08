@@ -4,6 +4,11 @@
 // Create subclasses for different enemy types!
 // ============================================
 
+// Helper function to generate random integers between min and max (inclusive)
+function randomNumber(min, max) {
+  return int(random(min, max + 1));
+}
+
 class Enemy extends GameObject {
   constructor(x, y, size, speed) {
     super(x, y, size || 12);
