@@ -5,34 +5,24 @@
 
 class Player extends GameObject {
   constructor(x, y) {
-    super(x, y, 15);  // size = 15
-    this.health = 1;
+    super(mouseX, mouseY, 10);  // size = 15
     this.color = '#00ff88';
-    this.alive = true;
     this.heldTower = null;
+    this.image = null
     // TODO: Add any additional properties your player needs
     // Examples: this.abilities = [], this.score = 0, this.direction = 0
   }
 
   update() {
-    // TODO: Handle keyboard input for movement
-    // Use keyIsDown(LEFT_ARROW) or keyIsDown(65) for 'A', etc.
-    // Don't forget to keep the player inside the canvas!
-    //
-    // Example:
-    // if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.x -= this.speed;
-    // if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) this.x += this.speed;
-    // if (keyIsDown(UP_ARROW) || keyIsDown(87)) this.y -= this.speed;
-    // if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) this.y += this.speed;
-    //
-    // Keep in bounds:
-    // this.x = constrain(this.x, this.size, width - this.size);
-    // this.y = constrain(this.y, this.size, height - this.size);
+    // Follow cursor
+    this.x = mouseX;
+    this.y = mouseY;
   }
   draw() {
-      image(swordImg, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+      // Draw green circle
+      fill(0, 255, 100);
+      circle(this.x, this.y, this.size * 2);
    
-
     // Draw health bar
     let barWidth = 30;
     let healthPercent = this.health / (this.maxHealth || 1);
@@ -177,9 +167,8 @@ class Bigmoney extends GameObject {
    this.cost = 50; // Cost of the Bigmoney tower
   }
   draw() {
-    fill(0,255,0)
+    fill(0, 255, 0);
     square(50, 50, 40);
-    }
 
     // Draw health bar
     let barWidth = 30;

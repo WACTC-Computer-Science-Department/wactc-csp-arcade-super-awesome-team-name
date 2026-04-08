@@ -4,6 +4,11 @@
 // Create subclasses for different enemy types!
 // ============================================
 
+// Helper function to generate random integers between min and max (inclusive)
+function randomNumber(min, max) {
+  return int(random(min, max + 1));
+}
+
 class Enemy extends GameObject {
   constructor(x, y, size, speed) {
     super(x, y, size || 12);
@@ -62,7 +67,7 @@ class ConeBalloon extends Enemy {
 
   update() {
     this.x -= this.speed;
-    if (randomNumber(0, 5) === 5) {
+    if (randomNumber(1, 5) === 5) {
       this.y += randomNumber(-2, 2);
     }
     if (this.x < -this.size) this.alive = false;
@@ -98,7 +103,7 @@ class ConeBalloon extends Enemy {
 
   update() {
     this.x -= this.speed;
-    if (randomNumber(0, 5) === 5) {
+    if (randomNumber(1, 5) === 5) {
       this.y += randomNumber(-1, 1);
     }
     if (this.x < -this.size) this.alive = false;
@@ -123,7 +128,7 @@ class ConeBalloon extends Enemy {
  update() {
     this.x -= this.speed;
     // Random vertical drift
-    if (randomNumber(0, 5) === 5) {
+    if (randomNumber(1, 5) === 5) {
       this.x += randomNumber(-2, 2);
     }
     if (this.x < -this.size) this.alive = false;
@@ -148,7 +153,7 @@ class bucketballoon extends Enemy{
   update() {
     this.x -= this.speed;
     // Random vertical drift
-    if (randomNumber(0, 5) === 5) {
+    if (randomNumber(1, 5) === 5) {
       this.x += randomNumber(-2, 2);
     }       
     if (this.x < -this.size) this.alive = false;
@@ -174,7 +179,7 @@ class bucketballoon extends Enemy{
  update(){
  this.x -= this.speed;
     // Random vertical drift
-    if (randomNumber(0, 5) === 5) {
+    if (randomNumber(1, 5) === 5) {
       this.x += randomNumber(-2, 2);
     }       
     if (this.x < -this.size) this.alive = false;
