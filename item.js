@@ -33,10 +33,11 @@ class BigMoney extends GameObject {
 }
 class Smallmoney extends Bigmoney {
   constructor(x,y,name, icon)
-  var name
+  var this.name
   this.name = Smallmoney;
   this.icon =icon;
   super(x, y,15,15)
+  icon = icon
 }
 
 draw(){
