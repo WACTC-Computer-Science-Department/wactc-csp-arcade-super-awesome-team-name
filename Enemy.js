@@ -67,9 +67,6 @@ class ConeBalloon extends Enemy {
 
   update() {
     this.x -= this.speed;
-    if (randomNumber(1, 5) === 5) {
-      this.y += randomNumber(-2, 2);
-    }
     if (this.x < -this.size) this.alive = false;
   }
 
@@ -103,9 +100,6 @@ class ConeBalloon extends Enemy {
 
   update() {
     this.x -= this.speed;
-    if (randomNumber(1, 5) === 5) {
-      this.y += randomNumber(-1, 1);
-    }
     if (this.x < -this.size) this.alive = false;
   }
 
@@ -127,10 +121,6 @@ class ConeBalloon extends Enemy {
   }
  update() {
     this.x -= this.speed;
-    // Random vertical drift
-    if (randomNumber(1, 5) === 5) {
-      this.x += randomNumber(-2, 2);
-    }
     if (this.x < -this.size) this.alive = false;
   }
   draw() {
@@ -152,10 +142,6 @@ class bucketballoon extends Enemy{
   }
   update() {
     this.x -= this.speed;
-    // Random vertical drift
-    if (randomNumber(1, 5) === 5) {
-      this.x += randomNumber(-2, 2);
-    }       
     if (this.x < -this.size) this.alive = false;
   }
   draw() {
@@ -178,10 +164,6 @@ class bucketballoon extends Enemy{
  
  update(){
  this.x -= this.speed;
-    // Random vertical drift
-    if (randomNumber(1, 5) === 5) {
-      this.x += randomNumber(-2, 2);
-    }       
     if (this.x < -this.size) this.alive = false;
  } 
  draw(){

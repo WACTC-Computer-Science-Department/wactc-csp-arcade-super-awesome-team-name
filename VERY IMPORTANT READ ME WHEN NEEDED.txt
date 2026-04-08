@@ -40,3 +40,20 @@ Row,Column  x , y
 6,6	560, 346
 6,7	640, 344
 
+Waves
+wave 1: 1 basic balloon in the center lane
+20 second prep time, money drops have double cooldown
+wave 2: 3 basic balloons
+20 second prep, money drops have double cooldown
+wave 3: 6 basic balloons
+20 second , money drops have double cooldown
+wave 4: 6 basic balloons and 3 cone balloons in random order
+20 second prep, money drops have double cooldown
+wave 5: 3 basic, 5 cone balloons and 2 bucket balloons in random order
+20 seocnd prep, money drops have double cooldown
+wave 6: 1 basic, 8 cone baloons and 5 bucket balloons in random order
+20 second prep, money drops have double cooldown
+wave 7: 8 cone balloons and 7 cone balloons in random order
+20 second prep, money drops have double cooldown
+boss wave: sherm boss balloon
+vicory screen
