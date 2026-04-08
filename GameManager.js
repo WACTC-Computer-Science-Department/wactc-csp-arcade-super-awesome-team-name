@@ -79,14 +79,19 @@ class GameManager {
   }
 
   spawnEnemy() {
-    // Spawn enemies at random positions
+    // Spawn enemies at grid-aligned positions
     // Use different Enemy subclasses for variety!
     let side = floor(random(4));  // 0=top, 1=right, 2=bottom, 3=left
     let x, y;
+    
+    // Grid y-values from TowerGrid: rows 1-5 (rounded values)
+    let gridYValues = [60, 130, 200, 270, 340];
+    let randomGridY = gridYValues[floor(random(gridYValues.length))];
+    
     if (side === 0) { x = random(width); y = -20; }
-    else if (side === 1) { x = width + 20; y = random(height); }
+    else if (side === 1) { x = width + 20; y = randomGridY; }
     else if (side === 2) { x = random(width); y = height + 20; }
-    else { x = -20; y = random(height); }
+    else { x = -20; y = randomGridY; }
 
     let type = floor(random(4));
     if (type === 0) {
