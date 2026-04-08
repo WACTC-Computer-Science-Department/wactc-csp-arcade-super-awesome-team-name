@@ -22,14 +22,6 @@ class Player extends GameObject {
       // Draw green circle
       fill(0, 255, 100);
       circle(this.x, this.y, this.size * 2);
-   
-    // Draw health bar
-    let barWidth = 30;
-    let healthPercent = this.health / (this.maxHealth || 1);
-    fill(100);
-    rect(this.x - barWidth/2, this.y - this.size - 10, barWidth, 4);
-    fill(0, 255, 100);
-    rect(this.x - barWidth/2, this.y - this.size - 10, barWidth * healthPercent, 4);
   }
 
   takeDamage(amount) {

@@ -119,7 +119,6 @@ class GameManager {
     for (let i = 0; i < this.enemies.length; i++) {
       if (this.player.collidesWith(this.enemies[i])) {
         this.player.takeDamage(this.enemies[i].damage);
-        this.enemies[i].alive = false;
         if (!this.player.alive) {
           this.gameOver();
         }

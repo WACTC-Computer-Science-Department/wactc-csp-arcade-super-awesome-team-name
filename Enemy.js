@@ -59,7 +59,7 @@ class Enemy extends GameObject {
 
 class ConeBalloon extends Enemy {
   constructor(x, y) {
-    super(x, y, 8, 1);  // Slightly larger and a bit faster than Basicballoon
+    super(x, y, 40, 1);  // Slightly larger and a bit faster than Basicballoon
     this.image = typeof coneBalloonImg !== 'undefined' ? coneBalloonImg : null;
     this.health = 10;
     this.damage = 2;
@@ -95,7 +95,7 @@ class ConeBalloon extends Enemy {
 
   class Fastballoon extends Enemy {
   constructor(x, y) {
-    super(x, y, 8, 2);
+    super(x, y, 40, 2);
     this.image = typeof fastBalloonImg !== 'undefined' ? fastBalloonImg : null;
     this.health = 5;
     this.damage = 3;
@@ -120,7 +120,7 @@ class ConeBalloon extends Enemy {
 
  class Basicballoon extends Enemy{
    constructor(x,y){
-    super(x,y, 8, 1)
+    super(x,y, 40, 1)
     this.image = typeof basicBalloonImg !== 'undefined' ? basicBalloonImg : null;
     this.health = 15
     this.damage = 1
@@ -145,7 +145,7 @@ class ConeBalloon extends Enemy {
 
 class bucketballoon extends Enemy{
   constructor(x,y){
-    super(x,y, 8, 1)
+    super(x,y, 40, 1)
     this.image = typeof bucketBalloonImg !== 'undefined' ? bucketBalloonImg : null;
     this.health = 15
     this.damage = 2
@@ -170,7 +170,7 @@ class bucketballoon extends Enemy{
   
  class SCHERMBOSS extends Enemy {
   constructor(x, y) {
-    super(x, y, 120, 0.1);  // Larger and slower than regular enemies
+    super(x, y, 80, 0.1);  // Larger and slower than regular enemies
     this.image = typeof schermBalloonImg !== 'undefined' ? schermBalloonImg : null;
     this.health = 500;
     this.damage = 35;
