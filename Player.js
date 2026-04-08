@@ -8,7 +8,7 @@ class Player extends GameObject {
     super(mouseX, mouseY, 10);  // size = 15
     this.color = '#00ff88';
     this.heldTower = null;
-    this.image = null
+    this.image = typeof cursorImg !== 'undefined' ? cursorImg : null;
     // TODO: Add any additional properties your player needs
     // Examples: this.abilities = [], this.score = 0, this.direction = 0
   }
