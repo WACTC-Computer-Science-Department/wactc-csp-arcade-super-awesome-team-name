@@ -179,7 +179,6 @@ class Bigmoney extends GameObject {
   draw() {
     fill(0,255,0)
     square(50, 50, 40);
-    }
 
     // Draw health bar
     let barWidth = 30;
