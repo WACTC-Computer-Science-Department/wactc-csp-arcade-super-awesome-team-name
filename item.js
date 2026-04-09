@@ -10,9 +10,8 @@ class BigMoney extends GameObject {
    this.cost = 50; // Cost of the Bigmoney tower
   }
   draw() {
-    fill(0,255,0)
-    square(50, 50, 40);
-    }
+    fill(0,255,0);
+    square(this.x - 20, this.y - 20, 40);
 
     // Draw health bar
     let barWidth = 30;
@@ -32,17 +31,19 @@ class BigMoney extends GameObject {
   }
 }
 class Smallmoney extends Bigmoney {
-  constructor(x,y,name, icon)
- super(x, y,15,15) 
-  this.name = Smallmoney;
-  this.icon =icon;
+  constructor(x,y,name, icon) {
+    super(x, y, 15);
+    this.name = "Smallmoney";
+    this.icon = icon;
+  }
 
-}
-use(player){
-  
-}
-draw(){
-    square(50, 50, 30);
-    fill(0,202,0)
+  use(player) {
+    // Implementation here
+  }
+
+  draw() {
+    fill(0, 202, 0);
+    square(this.x - 15, this.y - 15, 30);
+  }
 }
 
