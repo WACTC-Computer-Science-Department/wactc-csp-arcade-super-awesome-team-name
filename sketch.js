@@ -26,13 +26,15 @@ function draw() {
     drawHUD(window.gm);
   } else if (window.gm.gameState === 'gameover') {
     drawGameOver(window.gm);
+  } else if (window.gm.gameState === 'victory') {
+    drawVictory(window.gm);
   }
 }
 
 function keyPressed() {
   if (window.gm.gameState === 'menu' && (keyCode === 32 || keyCode === 13)) {
     window.gm.startGame();
-  } else if (window.gm.gameState === 'gameover' && (key === 'r' || key === 'R')) {
+  } else if ((window.gm.gameState === 'gameover' || window.gm.gameState === 'victory') && (key === 'r' || key === 'R')) {
     window.gm.gameState = 'menu';
   }
   // TODO: Add game-specific key controls

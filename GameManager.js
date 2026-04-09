@@ -13,8 +13,29 @@ class GameManager {
     this.highScore = 0;
     this.wave = 1;
     this.spawnTimer = 0;
-    this.spawnRate = 90;  // frames between spawns
-    this.gameState = 'menu';  // 'menu', 'playing', 'gameover'
+    this.spawnRate = 300;  // frames between spawns (5 seconds at 60fps)
+    this.gameState = 'menu';  // 'menu', 'playing', 'gameover', 'victory'
+    
+    // Wave system
+    this.waveState = 'prep';  // 'prep', 'spawning', 'waiting'
+    this.prepTimer = 0;
+    this.prepDuration = 0;
+    this.enemyQueue = [];  // Queue of enemies to spawn this wave
+    this.waveDefinitions = this.getWaveDefinitions();
+  }
+
+  getWaveDefinitions() {
+    // Define all waves: [type, type, ...]
+    return [
+      { prep: 30 * 60, enemies: ['basic'] },  // Wave 1: 1 basic (30 sec prep)
+      { prep: 20 * 60, enemies: ['basic', 'basic', 'basic'] },  // Wave 2: 3 basic (20 sec prep)
+      { prep: 20 * 60, enemies: ['basic', 'basic', 'basic', 'basic', 'basic', 'basic'] },  // Wave 3: 6 basic
+      { prep: 20 * 60, enemies: ['basic', 'basic', 'basic', 'basic', 'basic', 'basic', 'cone', 'cone', 'cone'] },  // Wave 4: 6 basic, 3 cone
+      { prep: 20 * 60, enemies: ['basic', 'basic', 'basic', 'cone', 'cone', 'cone', 'cone', 'cone', 'bucket', 'bucket'] },  // Wave 5
+      { prep: 20 * 60, enemies: ['basic', 'cone', 'cone', 'cone', 'cone', 'cone', 'cone', 'cone', 'cone', 'bucket', 'bucket', 'bucket', 'bucket', 'bucket'] },  // Wave 6
+      { prep: 20 * 60, enemies: ['cone', 'cone', 'cone', 'cone', 'cone', 'cone', 'cone', 'cone', 'fast', 'fast', 'fast', 'fast', 'fast', 'fast', 'fast'] },  // Wave 7
+      { prep: 20 * 60, enemies: ['boss'] }  // Boss wave
+    ];
   }
 
   createPlayer() {
@@ -27,9 +48,34 @@ class GameManager {
     this.projectiles = [];
     this.score = 0;
     this.wave = 1;
-    this.spawnTimer = 0;
-    this.spawnRate = 90;
     this.gameState = 'playing';
+    this.waveState = 'prep';
+    this.prepTimer = 0;
+    this.startWave(1);
+  }
+
+  startWave(waveNum) {
+    if (waveNum > this.waveDefinitions.length) {
+      this.gameState = 'victory';
+      return;
+    }
+    
+    this.wave = waveNum;
+    this.waveState = 'prep';
+    this.prepTimer = 0;
+    const waveDef = this.waveDefinitions[waveNum - 1];
+    this.prepDuration = waveDef.prep;
+    this.enemyQueue = [...waveDef.enemies];  // Copy enemy list
+    this.shuffleArray(this.enemyQueue);  // Randomize spawn order
+    this.spawnTimer = 0;
+  }
+
+  shuffleArray(arr) {
+    // Fisher-Yates shuffle algorithm
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = floor(random(0, i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];  // Swap
+    }
   }
 
   update() {
@@ -38,11 +84,24 @@ class GameManager {
     // Update player
     this.player.update();
 
-    // Spawn enemies
-    this.spawnTimer++;
-    if (this.spawnTimer >= this.spawnRate) {
-      this.spawnEnemy();
-      this.spawnTimer = 0;
+    // Handle wave states
+    if (this.waveState === 'prep') {
+      this.prepTimer++;
+      if (this.prepTimer >= this.prepDuration) {
+        this.waveState = 'spawning';
+        this.spawnTimer = 0;
+      }
+    } else if (this.waveState === 'spawning') {
+      this.spawnTimer++;
+      if (this.spawnTimer >= this.spawnRate && this.enemyQueue.length > 0) {
+        this.spawnEnemyFromQueue();
+        this.spawnTimer = 0;
+      }
+      
+      // Check if wave is complete (all queued enemies spawned and all enemies defeated)
+      if (this.enemyQueue.length === 0 && this.enemies.length === 0) {
+        this.startWave(this.wave + 1);
+      }
     }
 
     // TODO: Update all enemies (polymorphic — works for any Enemy subclass!)
@@ -78,24 +137,31 @@ class GameManager {
     this.player.draw();
   }
 
-  spawnEnemy() {
-    // Spawn balloons along grid rows from the right side
-    // Pick a random row and spawn off-screen to the right
-    let row = floor(random(1, 6)); // Rows 1-5 from TOWER_GRID
+  spawnEnemyFromQueue() {
+    if (this.enemyQueue.length === 0) return;
+    
+    const enemyType = this.enemyQueue.shift();  // Get and remove first enemy from queue
+    
+    // Spawn at random grid row
+    let row = floor(random(1, 6));  // Rows 1-5
     let gridPos = TOWER_GRID.getPosition(row, 7);
     
     let x = width + 20;  // Off-screen to the right
     let y = gridPos ? gridPos.y : height / 2;  // Use grid y-position
 
-    let type = floor(random(4));
-    if (type === 0) {
+    // Spawn the correct enemy type
+    if (enemyType === 'basic') {
       this.enemies.push(new Basicballoon(x, y));
-    } else if (type === 1) {
+    } else if (enemyType === 'fast') {
       this.enemies.push(new Fastballoon(x, y));
-    } else if (type === 2) {
+    } else if (enemyType === 'cone') {
       this.enemies.push(new ConeBalloon(x, y));
-    } else {
+    } else if (enemyType === 'bucket') {
       this.enemies.push(new bucketballoon(x, y));
+    } else if (enemyType === 'boss') {
+      // Boss spawns in middle lane
+      let bossPosY = TOWER_GRID.getPosition(3, 7).y;  // Middle row
+      this.enemies.push(new SCHERMBOSS(x, bossPosY));
     }
   }
 

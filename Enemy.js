@@ -167,7 +167,7 @@ class bucketballoon extends Enemy{
   
  class SCHERMBOSS extends Enemy {
   constructor(x, y) {
-    super(x, y, 80, 0.1);  // Larger and slower than regular enemies
+    super(x, y, 80, 0.4);  // Larger and slower than regular enemies
     this.image = typeof schermBalloonImg !== 'undefined' ? schermBalloonImg : null;
     this.health = 500;
     this.damage = 35;
