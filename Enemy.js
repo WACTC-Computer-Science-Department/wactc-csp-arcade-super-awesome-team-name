@@ -17,6 +17,9 @@ class Enemy extends GameObject {
     this.damage = 5;
     this.color = '#ff4444';
     this.target = window.gm.player;
+    this.baseY = y;  // Store original Y position for bobbing
+    this.bobTimer = random(TWO_PI);  // Random start for variation
+    this.bobAmount = 5;  // Pixels to bob up and down
 
     // TODO: Add additional enemy properties
     // Examples: this.aiType = 'chase', this.target = null
@@ -67,6 +70,8 @@ class ConeBalloon extends Enemy {
 
   update() {
     this.x -= this.speed;
+    this.bobTimer += 0.05;  // Increment bob animation
+    this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
     if (this.x < -this.size) this.alive = false;
   }
 
@@ -100,6 +105,8 @@ class ConeBalloon extends Enemy {
 
   update() {
     this.x -= this.speed;
+    this.bobTimer += 0.05;  // Increment bob animation
+    this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
     if (this.x < -this.size) this.alive = false;
   }
 
@@ -121,6 +128,8 @@ class ConeBalloon extends Enemy {
   }
  update() {
     this.x -= this.speed;
+    this.bobTimer += 0.05;  // Increment bob animation
+    this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
     if (this.x < -this.size) this.alive = false;
   }
   draw() {
@@ -142,6 +151,8 @@ class bucketballoon extends Enemy{
   }
   update() {
     this.x -= this.speed;
+    this.bobTimer += 0.05;  // Increment bob animation
+    this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
     if (this.x < -this.size) this.alive = false;
   }
   draw() {
@@ -164,6 +175,8 @@ class bucketballoon extends Enemy{
  
  update(){
  this.x -= this.speed;
+    this.bobTimer += 0.05;  // Increment bob animation
+    this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
     if (this.x < -this.size) this.alive = false;
  } 
  draw(){

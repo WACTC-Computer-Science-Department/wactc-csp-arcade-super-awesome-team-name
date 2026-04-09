@@ -79,19 +79,13 @@ class GameManager {
   }
 
   spawnEnemy() {
-    // Spawn enemies at grid-aligned positions
-    // Use different Enemy subclasses for variety!
-    let side = floor(random(4));  // 0=top, 1=right, 2=bottom, 3=left
-    let x, y;
+    // Spawn balloons along grid rows from the right side
+    // Pick a random row and spawn off-screen to the right
+    let row = floor(random(1, 6)); // Rows 1-5 from TOWER_GRID
+    let gridPos = TOWER_GRID.getPosition(row, 7);
     
-    // Grid y-values from TowerGrid: rows 1-5 (rounded values)
-    let gridYValues = [60, 130, 200, 270, 340];
-    let randomGridY = gridYValues[floor(random(gridYValues.length))];
-    
-    if (side === 0) { x = random(width); y = -20; }
-    else if (side === 1) { x = width + 20; y = randomGridY; }
-    else if (side === 2) { x = random(width); y = height + 20; }
-    else { x = -20; y = randomGridY; }
+    let x = width + 20;  // Off-screen to the right
+    let y = gridPos ? gridPos.y : height / 2;  // Use grid y-position
 
     let type = floor(random(4));
     if (type === 0) {
