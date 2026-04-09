@@ -16,7 +16,16 @@ function setup() {
 }
 
 function draw() {
-  background('#1a1a2e');
+  if (window.gm.gameState === 'playing') {
+    // Use background image when playing
+    if (typeof backgroundImg !== 'undefined') {
+      image(backgroundImg, 0, 0, width, height);
+    } else {
+      background('#1a1a2e');
+    }
+  } else {
+    background('#1a1a2e');
+  }
 
   if (window.gm.gameState === 'menu') {
     drawMenu(window.gm);

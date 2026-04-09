@@ -147,7 +147,7 @@ class GameManager {
     let gridPos = TOWER_GRID.getPosition(row, 7);
     
     let x = width + 20;  // Off-screen to the right
-    let y = gridPos ? gridPos.y : height / 2;  // Use grid y-position
+    let y = (gridPos ? gridPos.y : height / 2) + 20;  // Use grid y-position, moved down by 20 pixels
 
     // Spawn the correct enemy type
     if (enemyType === 'basic') {

@@ -51,7 +51,7 @@ function loadAssets() {
   schermBalloonImg = loadImage('assets/schermBalloonSprite.png');
   cursorImg = loadImage('assets/cursorSprite.png');
   projectileImg = loadImage('assets/projectileSprite.png');
-  // backgroundImg = loadImage('assets/backgroundSprite.png');  // Add if image exists
+  backgroundImg = loadImage('assets/Frontyard-1.png (1).png');  // Add if image exists
   // gameOverImg = loadImage('assets/gameOverSprite.png');  // Add if image exists
   // menuImg = loadImage('assets/menuSprite.png');  // Add if image exists
 }
