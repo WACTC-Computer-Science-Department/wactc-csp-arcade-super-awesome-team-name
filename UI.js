@@ -20,7 +20,12 @@ function drawMenu(gm) {
 }
 
 function drawHUD(gm) {
-  fill('#6e0099d2');
+  
+  fill(0, 0, 0, 150); 
+  noStroke();
+  rect(5, 5, 200, 85); 
+  
+  fill('#ffffff');
   textAlign(LEFT, TOP);
   textSize(14);
   text('Score: ' + gm.score, 10, 10);
