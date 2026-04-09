@@ -41,6 +41,7 @@ Row,Column  x , y
 6,7	640, 344
 
 Waves
+30 second prep time
 wave 1: 1 basic balloon in the center lane
 20 second prep time, money drops have double cooldown
 wave 2: 3 basic balloons
