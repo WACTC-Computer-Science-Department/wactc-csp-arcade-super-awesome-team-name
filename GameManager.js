@@ -109,6 +109,14 @@ class GameManager {
       this.enemies[i].update();
     }
 
+    // If any enemy reaches x <= 80, trigger game over and let enemies drop to y=250 at x<=100
+    for (let i = 0; i < this.enemies.length; i++) {
+      if (this.enemies[i].x <= 80) {
+        this.gameOver();
+        return;
+      }
+    }
+
     // TODO: Update all projectiles
     for (let i = 0; i < this.projectiles.length; i++) {
       this.projectiles[i].update();
@@ -180,15 +188,8 @@ class GameManager {
       }
     }
 
-    // TODO: Check player-enemy collisions
-    for (let i = 0; i < this.enemies.length; i++) {
-      if (this.player.collidesWith(this.enemies[i])) {
-        this.player.takeDamage(this.enemies[i].damage);
-        if (!this.player.alive) {
-          this.gameOver();
-        }
-      }
-    }
+    // Player-cursor collision is not used for loss in tower defense mode.
+    // Game over happens when an enemy reaches the left edge.
   }
 
   cleanup() {

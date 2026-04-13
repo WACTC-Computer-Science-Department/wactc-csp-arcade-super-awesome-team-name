@@ -58,3 +58,9 @@ wave 7: 8 cone balloons and 7 cone balloons in random order
 20 second prep, money drops have double cooldown
 boss wave: sherm boss balloon
 vicory screen
+
+
+
+
+
+balloon reaches x = 90, balloon moves to y = 250, then goes to x = 80 and sets to game over 

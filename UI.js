@@ -16,11 +16,11 @@ function drawMenu(gm) {
 
   fill(0, 0, 0, 180);
   noStroke();
-  rect(width * 0.1, height * 0.22, width * 0.8, height * 0.36, 20);
+  rect(width * 0.1, height * 0.22, width * 0.8, height * 0.50, 20);
 
   fill('#ffffff');
   textAlign(CENTER, CENTER);
-  textSize(32);
+  textSize(25);
   text('John Grace\'s Airsoft Weapons VS Scherm\'s Evil Balloons', width / 2, height / 3);
   textSize(18);
   text('Press SPACE or ENTER to start', width / 2, height / 2 + 40);

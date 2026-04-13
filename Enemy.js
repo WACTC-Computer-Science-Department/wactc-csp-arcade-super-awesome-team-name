@@ -20,6 +20,7 @@ class Enemy extends GameObject {
     this.baseY = y;  // Store original Y position for bobbing
     this.bobTimer = random(TWO_PI);  // Random start for variation
     this.bobAmount = 5;  // Pixels to bob up and down
+    this.reachedDropPoint = false;  // Drop to y=250 once at x<=100
 
     // TODO: Add additional enemy properties
     // Examples: this.aiType = 'chase', this.target = null
@@ -50,6 +51,31 @@ class Enemy extends GameObject {
     }
   }
 
+  handleDropAndGameOver() {
+    if (!this.reachedDropPoint && this.x <= 100) {
+      this.reachedDropPoint = true;
+      this.dropTargetY = 260;
+      this.x = 100;
+    }
+
+    let dropping = false;
+    if (this.reachedDropPoint) {
+      const delta = this.dropTargetY - this.baseY;
+      if (abs(delta) > 0.1) {
+        this.baseY += Math.sign(delta) * 0.5;
+        dropping = true;
+      } else {
+        this.baseY = this.dropTargetY;
+      }
+    }
+
+    if (this.x <= 80 && window.gm && window.gm.gameState === 'playing') {
+      window.gm.gameOver();
+    }
+
+    return dropping;
+  }
+
   // TODO: Add enemy-specific methods
   // Examples: patrol(), attack(), dropLoot()
 }
@@ -69,7 +95,10 @@ class ConeBalloon extends Enemy {
   }
 
   update() {
-    this.x -= this.speed;
+    const dropping = this.handleDropAndGameOver();
+    if (!dropping) {
+      this.x -= this.speed;
+    }
     this.bobTimer += 0.05;  // Increment bob animation
     this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
     if (this.x < -this.size) this.alive = false;
@@ -104,7 +133,10 @@ class ConeBalloon extends Enemy {
   }
 
   update() {
-    this.x -= this.speed;
+    const dropping = this.handleDropAndGameOver();
+    if (!dropping) {
+      this.x -= this.speed;
+    }
     this.bobTimer += 0.05;  // Increment bob animation
     this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
     if (this.x < -this.size) this.alive = false;
@@ -127,7 +159,10 @@ class ConeBalloon extends Enemy {
     this.damage = 1
   }
  update() {
-    this.x -= this.speed;
+    const dropping = this.handleDropAndGameOver();
+    if (!dropping) {
+      this.x -= this.speed;
+    }
     this.bobTimer += 0.05;  // Increment bob animation
     this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
     if (this.x < -this.size) this.alive = false;
@@ -150,7 +185,10 @@ class bucketballoon extends Enemy{
     this.damage = 2
   }
   update() {
-    this.x -= this.speed;
+    const dropping = this.handleDropAndGameOver();
+    if (!dropping) {
+      this.x -= this.speed;
+    }
     this.bobTimer += 0.05;  // Increment bob animation
     this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
     if (this.x < -this.size) this.alive = false;
@@ -174,7 +212,10 @@ class bucketballoon extends Enemy{
   }
  
  update(){
+ const dropping = this.handleDropAndGameOver();
+ if (!dropping) {
  this.x -= this.speed;
+ }
     this.bobTimer += 0.05;  // Increment bob animation
     this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
     if (this.x < -this.size) this.alive = false;
