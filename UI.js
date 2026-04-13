@@ -5,18 +5,30 @@
 // ============================================
 
 function drawMenu(gm) {
+  if (menuImg) {
+    push();
+    imageMode(CENTER);
+    image(menuImg, width / 2, height / 2, width, height);
+    pop();
+  } else {
+    background('#1a1a2e');
+  }
+
+  fill(0, 0, 0, 180);
+  noStroke();
+  rect(width * 0.1, height * 0.22, width * 0.8, height * 0.36, 20);
+
   fill('#ffffff');
   textAlign(CENTER, CENTER);
   textSize(32);
   text('John Grace\'s Airsoft Weapons VS Scherm\'s Evil Balloons', width / 2, height / 3);
-  textSize(16);
-  text('Press SPACE or ENTER to start', width / 2, height / 2);
+  textSize(18);
+  text('Press SPACE or ENTER to start', width / 2, height / 2 + 40);
   
   if (gm.highScore > 0) {
-    text('High Score: ' + gm.highScore, width / 2, height * 2 / 3);
+    textSize(16);
+    text('High Score: ' + gm.highScore, width / 2, height * 2 / 3 + 10);
   }
-
-  // TODO: Add instructions, credits, game art, etc.
 }
 
 function drawHUD(gm) {
@@ -45,6 +57,19 @@ function drawHUD(gm) {
 }
 
 function drawGameOver(gm) {
+  if (gameOverImg) {
+    push();
+    imageMode(CENTER);
+    image(gameOverImg, width / 2, height / 2, width, height);
+    pop();
+  } else {
+    background('#1a1a2e');
+  }
+
+  fill(0, 0, 0, 200);
+  noStroke();
+  rect(width * 0.1, height * 0.2, width * 0.8, height * 0.5, 20);
+
   fill('#ffffff');
   textAlign(CENTER, CENTER);
   textSize(32);
