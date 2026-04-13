@@ -12,8 +12,6 @@ class BigMoney extends GameObject {
   draw() {
     fill(0,255,0);
     square(this.x - 20, this.y - 20, 40);
-
-    // Draw health bar
     let barWidth = 30;
     let healthPercent = this.health / 2;
     fill(100);
@@ -24,7 +22,7 @@ class BigMoney extends GameObject {
 
   takeDamage(amount) {
     this.health -= amount;
-    if (this.health <= 0) {
+    if (this.health = 0) {
       this.health = 0;
       this.alive = false;
     }
@@ -34,7 +32,7 @@ class Smallmoney extends Bigmoney {
   constructor(x,y,name, icon) {
     super(x, y, 15);
     this.name = "Smallmoney";
-    this.icon = icon;
+    this.icon = icon; //will just be an image of small money sprite
   }
 
   use(player) {
@@ -43,7 +41,7 @@ class Smallmoney extends Bigmoney {
 
   draw() {
     fill(0, 202, 0);
-    square(this.x - 15, this.y - 15, 30);
+    square(this.x - 15, this.y - 15, 30)
   }
 }
 
