@@ -12,7 +12,7 @@ class BigMoney extends GameObject {
   draw() {
     fill(0,255,0);
     square(this.x - 20, this.y - 20, 40);
-
+//im back sigmas
     // Draw health bar
     let barWidth = 30;
     let healthPercent = this.health / 2;
