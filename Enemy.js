@@ -42,6 +42,17 @@ class Enemy extends GameObject {
     // TODO: Draw the enemy
     fill(this.color);
     ellipse(this.x, this.y, this.size * 2);
+    this.drawHealthBar();
+  }
+
+  drawHealthBar() {
+    let barWidth = this.size * 2;
+    let healthPercent = this.maxHealth ? constrain(this.health / this.maxHealth, 0, 1) : 1;
+    noStroke();
+    fill(0, 0, 0, 150);
+    rect(this.x - barWidth / 2, this.y - this.size - 14, barWidth, 6);
+    fill(0, 255, 0);
+    rect(this.x - barWidth / 2, this.y - this.size - 14, barWidth * healthPercent, 6);
   }
 
   takeDamage(amount) {
@@ -91,6 +102,7 @@ class ConeBalloon extends Enemy {
     super(x, y, 40, 1);  // Slightly larger and a bit faster than Basicballoon
     this.image = typeof coneBalloonImg !== 'undefined' ? coneBalloonImg : null;
     this.health = 10;
+    this.maxHealth = this.health;
     this.damage = 2;
   }
 
@@ -107,6 +119,7 @@ class ConeBalloon extends Enemy {
   draw() {
     if (this.image) {
       image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+      this.drawHealthBar();
       return;
     }
 
@@ -121,6 +134,7 @@ class ConeBalloon extends Enemy {
     // Draw a small ellipse at the base for the balloon knot
     fill(80, 40, 0);
     ellipse(this.x, this.y + this.size + 2, this.size / 2, this.size / 4);
+    this.drawHealthBar();
   }
 }
 
@@ -129,6 +143,7 @@ class ConeBalloon extends Enemy {
     super(x, y, 40, 2);
     this.image = typeof fastBalloonImg !== 'undefined' ? fastBalloonImg : null;
     this.health = 5;
+    this.maxHealth = this.health;
     this.damage = 3;
   }
 
@@ -145,9 +160,11 @@ class ConeBalloon extends Enemy {
   draw() {
     if (this.image) {
       image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+      this.drawHealthBar();
       return;
     }
     ellipse(this.x, this.y, this.size);
+    this.drawHealthBar();
   }
  }
 
@@ -155,8 +172,9 @@ class ConeBalloon extends Enemy {
    constructor(x,y){
     super(x,y, 40, 1)
     this.image = typeof basicBalloonImg !== 'undefined' ? basicBalloonImg : null;
-    this.health = 15
-    this.damage = 1
+    this.health = 15;
+    this.maxHealth = this.health;
+    this.damage = 1;
   }
  update() {
     const dropping = this.handleDropAndGameOver();
@@ -170,10 +188,12 @@ class ConeBalloon extends Enemy {
   draw() {
     if (this.image) {
       image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+      this.drawHealthBar();
       return;
     }
     fill(this.color);
     ellipse(this.x, this.y, this.size * 2);
+    this.drawHealthBar();
   }
 }
 
@@ -181,8 +201,9 @@ class bucketballoon extends Enemy{
   constructor(x,y){
     super(x,y, 40, 1)
     this.image = typeof bucketBalloonImg !== 'undefined' ? bucketBalloonImg : null;
-    this.health = 15
-    this.damage = 2
+    this.health = 15;
+    this.maxHealth = this.health;
+    this.damage = 2;
   }
   update() {
     const dropping = this.handleDropAndGameOver();
@@ -196,10 +217,12 @@ class bucketballoon extends Enemy{
   draw() {
     if (this.image) {
       image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+      this.drawHealthBar();
       return;
     }
     fill(this.color);
     ellipse(this.x, this.y, this.size * 2);
+    this.drawHealthBar();
   }
 }
   
@@ -208,6 +231,7 @@ class bucketballoon extends Enemy{
     super(x, y, 80, 0.4);  // Larger and slower than regular enemies
     this.image = typeof schermBalloonImg !== 'undefined' ? schermBalloonImg : null;
     this.health = 500;
+    this.maxHealth = this.health;
     this.damage = 35;
   }
  
@@ -223,9 +247,11 @@ class bucketballoon extends Enemy{
  draw(){
     if (this.image) {
       image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+      this.drawHealthBar();
       return;
     }
     fill(this.color);
     ellipse(this.x, this.y, this.size * 2);
+    this.drawHealthBar();
   }
  } 

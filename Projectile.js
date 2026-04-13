@@ -6,7 +6,7 @@
 class Projectile extends GameObject {
   constructor(x, y, dirX, dirY, speed, damage) {
     super(x, y, 4);  // size = 4
-    this.speed = speed || 8;
+    this.speed = speed || 4;
     this.damage = damage || 10;
     this.color = '#ffff00';
 

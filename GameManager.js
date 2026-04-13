@@ -9,6 +9,7 @@ class GameManager {
     this.player = null;
     this.enemies = [];
     this.projectiles = [];
+    this.towers = [];
     this.score = 0;
     this.highScore = 0;
     this.wave = 1;
@@ -46,11 +47,13 @@ class GameManager {
     this.player = this.createPlayer();
     this.enemies = [];
     this.projectiles = [];
+    this.towers = [];
     this.score = 0;
     this.wave = 1;
     this.gameState = 'playing';
     this.waveState = 'prep';
     this.prepTimer = 0;
+    this.spawnAutoKnives();
     this.startWave(1);
   }
 
@@ -83,6 +86,13 @@ class GameManager {
 
     // Update player
     this.player.update();
+
+    // Update towers so they can attack enemies and block paths
+    for (let i = 0; i < this.towers.length; i++) {
+      if (typeof this.towers[i].update === 'function') {
+        this.towers[i].update(this.enemies, this.projectiles);
+      }
+    }
 
     // Handle wave states
     if (this.waveState === 'prep') {
@@ -137,6 +147,10 @@ class GameManager {
       this.enemies[i].draw();
     }
 
+    for (let i = 0; i < this.towers.length; i++) {
+      this.towers[i].draw();
+    }
+
     for (let i = 0; i < this.projectiles.length; i++) {
       this.projectiles[i].draw();
     }
@@ -173,6 +187,75 @@ class GameManager {
     }
   }
 
+  createTower(type, x, y) {
+    if (type === 'sniper') {
+      return new SniperTower(x, y, 30);
+    } else if (type === 'pistol') {
+      return new PistolTower(x, y, 30);
+    } else if (type === 'sword') {
+      return new SwordTower(x, y, 30);
+    } else if (type === 'knife') {
+      return new KnifeTrap(x, y, 30);
+    } else if (type === 'wall') {
+      return new wallTower(x, y, 30);
+    } else if (type === 'bigMoney') {
+      return new BigMoney(x, y);
+    }
+    return null;
+  }
+
+  findTowerPosition(x, y) {
+    return TOWER_GRID.findNearestPosition(x, y, 40);
+  }
+
+  spawnAutoKnives() {
+    for (let row = 1; row <= 5; row++) {
+      const pos = TOWER_GRID.getPosition(row, 1);
+      if (!pos) continue;
+      const knife = new KnifeTrap(pos.x, pos.y, 30);
+      this.towers.push(knife);
+    }
+  }
+
+  findKnifeBackPosition(x, y) {
+    let bestRow = 1;
+    let minDistance = Infinity;
+    for (let row = 1; row <= 5; row++) {
+      const pos = TOWER_GRID.getPosition(row, 1);
+      if (!pos) continue;
+      const d = abs(y - pos.y);
+      if (d < minDistance) {
+        minDistance = d;
+        bestRow = row;
+      }
+    }
+    return TOWER_GRID.getPosition(bestRow, 1);
+  }
+
+  isTowerOccupiedAt(pos) {
+    if (!pos) return false;
+    for (let tower of this.towers) {
+      if (dist(tower.x, tower.y, pos.x, pos.y) < 1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  placeTower(type, x, y) {
+    if (!type || type === 'knife') return false;
+    const position = this.findTowerPosition(x, y);
+    if (!position || this.isTowerOccupiedAt(position)) {
+      return false;
+    }
+
+    const tower = this.createTower(type, position.x, position.y);
+    if (!tower) return false;
+
+    this.towers.push(tower);
+    return true;
+  }
+
   checkCollisions() {
     // TODO: Check projectile-enemy collisions
     // The beauty of OOP: collidesWith() works for ANY subclass!
@@ -204,6 +287,13 @@ class GameManager {
     for (let i = this.projectiles.length - 1; i >= 0; i--) {
       if (!this.projectiles[i].alive) {
         this.projectiles.splice(i, 1);
+      }
+    }
+
+    // Remove destroyed towers
+    for (let i = this.towers.length - 1; i >= 0; i--) {
+      if (!this.towers[i].alive) {
+        this.towers.splice(i, 1);
       }
     }
   }

@@ -41,21 +41,38 @@ function draw() {
   }
 }
 
+function mousePressed() {
+  if (window.gm && window.gm.gameState === 'playing' && window.gm.player && window.gm.player.heldTower) {
+    window.gm.placeTower(window.gm.player.heldTower, mouseX, mouseY);
+  }
+}
+
 function keyPressed() {
   if (window.gm.gameState === 'menu' && (keyCode === 32 || keyCode === 13)) {
     window.gm.startGame();
-  } else if ((window.gm.gameState === 'gameover' || window.gm.gameState === 'victory') && (key === 'r' || key === 'R')) {
-    window.gm.gameState = 'menu';
+    return;
   }
-  // TODO: Add game-specific key controls
-  // Example: if (key === ' ' && gm.gameState === 'playing') { gm.playerShoot(mouseX, mouseY); }
-  if (keyIsDown("1") || keyIsDown(49)) this.heldTower = "sniper";
-    if (keyIsDown("2") || keyIsDown(50)) this.heldTower = "pistol";
-    if (keyIsDown("3") || keyIsDown(51)) this.heldTower = "knife";
-    if (keyIsDown("4") || keyIsDown(52)) this.heldTower = "wall";
-    if (keyIsDown("5") || keyIsDown(53)) this.heldTower = "bigMoney";
-    
 
+  if ((window.gm.gameState === 'gameover' || window.gm.gameState === 'victory') && (key === 'r' || key === 'R')) {
+    window.gm.gameState = 'menu';
+    return;
+  }
+
+  if (window.gm.gameState !== 'playing' || !window.gm.player) {
+    return;
+  }
+
+  if (key === '1' || keyCode === 49) {
+    window.gm.player.heldTower = 'sniper';
+  } else if (key === '2' || keyCode === 50) {
+    window.gm.player.heldTower = 'pistol';
+  } else if (key === '4' || keyCode === 52) {
+    window.gm.player.heldTower = 'wall';
+  } else if (key === '5' || keyCode === 53) {
+    window.gm.player.heldTower = 'bigMoney';
+  } else if (key === 'Escape') {
+    window.gm.player.heldTower = null;
+  }
 }
 
 

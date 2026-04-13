@@ -35,7 +35,7 @@ function drawHUD(gm) {
   
   fill(0, 0, 0, 150); 
   noStroke();
-  rect(5, 5, 200, 85); 
+  rect(5, 5, 200, 130); 
   
   fill('#ffffff');
   textAlign(LEFT, TOP);
@@ -51,6 +51,12 @@ function drawHUD(gm) {
   } else if (gm.waveState === 'spawning') {
     text('State: Spawning...', 10, 70);
   }
+
+  const selectedTower = gm.player && gm.player.heldTower ? gm.player.heldTower : 'None';
+  text('Selected: ' + selectedTower, 10, 90);
+  textSize(12);
+  text('Press 1=sniper 2=pistol 4=wall 5=money', 10, 110);
+  text('Click to place.', 10, 125);
 
   // TODO: Add more HUD elements
   // Ideas: health bar, minimap, wave progress, combo counter

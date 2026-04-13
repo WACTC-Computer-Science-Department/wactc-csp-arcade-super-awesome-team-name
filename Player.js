@@ -44,7 +44,7 @@ class Player extends GameObject {
 }
 class SniperTower extends GameObject {
   constructor(x, y, size) {
-    super(x, y);
+    super(x, y, size || 30);
     this.image = typeof sniperImg !== 'undefined' ? sniperImg : null;
     this.projectile = "Sniper";
     this.range = 400;
@@ -89,7 +89,7 @@ class SniperTower extends GameObject {
     let dirY = 0;
     
     // Create sniper projectile (high damage)
-    let p = new Projectile(this.x, this.y, dirX, dirY, 10, 5);
+    let p = new Projectile(this.x, this.y, dirX, dirY, 6, 5);
     p.owner = 'tower';
     projectiles.push(p);
   }
@@ -97,11 +97,11 @@ class SniperTower extends GameObject {
 
 class PistolTower extends GameObject {
   constructor(x, y, size) {
-    super(x, y);
+    super(x, y, size || 30);
     this.image = typeof pistolImg !== 'undefined' ? pistolImg : null;
     this.projectile = "Pistol";
     this.range = 400;
-    this.fireRate = 60; // Frames between shots
+    this.fireRate = 100; // Frames between shots
     this.health = 5;
     this.alive = true;
     this.cooldown = 0; // Add cooldown timer
@@ -148,32 +148,157 @@ class PistolTower extends GameObject {
     let dirY = 0;
     
     // Create pistol projectile (medium damage)
-    let p = new Projectile(this.x, this.y, dirX, dirY, 10, 3);
+    let p = new Projectile(this.x, this.y, dirX, dirY, 8, 3);
     p.owner = 'tower';
     projectiles.push(p);
   }
 }
-class Bigmoney extends GameObject {
-  constructor(x,y) {
-  super(x,y,15);
-  this.health = 2;
-  this.image = typeof bigmoneyImg !== 'undefined' ? bigmoneyImg : null;
-  this.alive = true;
-  this.dropTimer = 300; // Timer for dropping money every 5 seconds
-  this.cooldown = 0; // Cooldown for dropping money 
-   this.moneyAmount = 10; // Amount of money dropped each time
-   this.cost = 50; // Cost of the Bigmoney tower
+class SwordTower extends GameObject {
+  constructor(x, y, size) {
+    super(x, y, size || 30);
+    this.image = typeof swordImg !== 'undefined' ? swordImg : null;
+    this.projectile = "Sword";
+    this.range = 100; // Melee range
+    this.fireRate = 30; // Frames between attacks
+    this.health = 8;
+    this.alive = true;
+    this.cooldown = 0; // Add cooldown timer
+    this.cost = 20; // Cost of the sword tower
   }
+  update(enemies, projectiles) {
+    this.cooldown--; // Decrease cooldown each frame
+    
+    if (this.cooldown <= 0) {
+      this.fire(enemies);
+      this.cooldown = this.fireRate; // Reset cooldown  
+    }
+  }
+
   draw() {
-    fill(0, 255, 0);
-    square(50, 50, 40);
+    if (this.image) {
+      image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+    } else {
+      noStroke();
+      fill('#ffff00');
+      rect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+    }
 
     // Draw health bar
     let barWidth = 30;
-    let healthPercent = this.health / 2;
+    let healthPercent = this.health / 8;
     fill(100);
     rect(this.x - barWidth/2, this.y - this.size - 10, barWidth, 4);
-    fill(255, 255, 0);
+    fill(0, 255, 100);
+    rect(this.x - barWidth/2, this.y - this.size - 10, barWidth * healthPercent, 4);
+  }
+
+  takeDamage(amount) {
+    this.health -= amount;
+    if (this.health <= 0) {
+      this.health = 0;
+      this.alive = false;
+    }
+  }
+
+  fire(enemies) {
+    // Melee attack - damage nearby enemies
+    for (let enemy of enemies) {
+      let dist = dist(this.x, this.y, enemy.x, enemy.y);
+      if (dist < this.range) {
+        enemy.takeDamage(2);
+      }
+    }
+  }
+}
+
+class KnifeTrap extends GameObject {
+  constructor(x, y, size) {
+    super(x, y, size || 30);
+    this.image = typeof swordImg !== 'undefined' ? swordImg : null;
+    this.range = 120;
+    this.fireRate = 45;
+    this.health = 10;
+    this.alive = true;
+    this.cooldown = 0;
+    this.cost = 15;
+  }
+
+  update(enemies) {
+    this.cooldown--;
+    if (this.cooldown <= 0) {
+      this.fire(enemies);
+      this.cooldown = this.fireRate;
+    }
+  }
+
+  draw() {
+    if (this.image) {
+      image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+    } else {
+      noStroke();
+      fill('#ffcc00');
+      rect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+      fill('#ffffff');
+      triangle(
+        this.x - this.size / 2, this.y + this.size / 2,
+        this.x, this.y - this.size / 2,
+        this.x + this.size / 2, this.y + this.size / 2
+      );
+    }
+
+    let barWidth = 40;
+    let healthPercent = this.health / 10;
+    fill(100);
+    rect(this.x - barWidth / 2, this.y - this.size - 12, barWidth, 4);
+    fill(0, 255, 100);
+    rect(this.x - barWidth / 2, this.y - this.size - 12, barWidth * healthPercent, 4);
+  }
+
+  takeDamage(amount) {
+    this.health -= amount;
+    if (this.health <= 0) {
+      this.health = 0;
+      this.alive = false;
+    }
+  }
+
+  fire(enemies) {
+    for (let enemy of enemies) {
+      let distToEnemy = dist(this.x, this.y, enemy.x, enemy.y);
+      if (distToEnemy < this.range) {
+        enemy.takeDamage(3);
+      }
+    }
+  }
+}
+
+class wallTower extends GameObject {
+  constructor(x, y, size) {
+    super(x, y, size || 30);
+    this.image = typeof wallImg !== 'undefined' ? wallImg : null;
+    this.health = 20;
+    this.alive = true;
+    this.cost = 10; // Cost of the wall tower
+  }
+  update() {
+    // Walls don't do anything, just sit there and block enemies
+  }
+
+  draw() {
+    if (this.image) {
+      image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+    } else {
+      noStroke();
+      fill('#888888');
+      rect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+    }
+
+    // Draw health bar
+    let barWidth = 30;
+    let healthPercent = this.health / 20;
+    fill(100);
+    rect(this.x - barWidth/2, this.y - this.size - 10, barWidth, 4);
+    fill(0, 255, 100);
     rect(this.x - barWidth/2, this.y - this.size - 10, barWidth * healthPercent, 4);
   }
 
