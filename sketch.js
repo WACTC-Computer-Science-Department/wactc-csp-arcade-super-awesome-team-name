@@ -11,6 +11,7 @@ function preload() {
 
 function setup() {
   createCanvas(1000, 400);
+  noCursor();
   textFont('monospace');
   window.gm = new GameManager();
 }

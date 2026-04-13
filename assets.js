@@ -14,11 +14,8 @@
 // ============================================
 
 // Declare your image variables here
-// let playerImg;
-// let enemyImg;
-// let bossImg;
-// let projectileImg;
-// let backgroundImg;
+
+
 let swordImg, 
 pistolImg, 
 sniperImg, 

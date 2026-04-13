@@ -19,9 +19,15 @@ class Player extends GameObject {
     this.y = mouseY;
   }
   draw() {
-      // Draw green circle
+    if (this.image) {
+      push();
+      imageMode(CENTER);
+      image(this.image, this.x, this.y, this.size * 7, this.size * 7);
+      pop();
+    } else {
       fill(0, 255, 100);
-      circle(this.x, this.y, this.size * 2);
+      circle(this.x, this.y, this.size * 3);
+    }
   }
 
   takeDamage(amount) {
