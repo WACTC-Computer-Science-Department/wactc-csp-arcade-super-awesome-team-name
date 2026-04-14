@@ -189,15 +189,15 @@ class GameManager {
 
   createTower(type, x, y) {
     if (type === 'sniper') {
-      return new SniperTower(x, y, 30);
+      return new SniperTower(x, y, 45);
     } else if (type === 'pistol') {
-      return new PistolTower(x, y, 30);
+      return new PistolTower(x, y, 45);
     } else if (type === 'sword') {
-      return new SwordTower(x, y, 30);
+      return new SwordTower(x, y, 45);
     } else if (type === 'knife') {
-      return new KnifeTrap(x, y, 30);
+      return new KnifeTrap(x, y, 45);
     } else if (type === 'wall') {
-      return new wallTower(x, y, 30);
+      return new wallTower(x, y, 45);
     } else if (type === 'bigMoney') {
       return new BigMoney(x, y);
     }
@@ -205,14 +205,14 @@ class GameManager {
   }
 
   findTowerPosition(x, y) {
-    return TOWER_GRID.findNearestPosition(x, y, 40);
+    return TOWER_GRID.findNearestPosition(x, y, 50);
   }
 
   spawnAutoKnives() {
     for (let row = 1; row <= 5; row++) {
       const pos = TOWER_GRID.getPosition(row, 1);
       if (!pos) continue;
-      const knife = new KnifeTrap(pos.x, pos.y, 30);
+      const knife = new KnifeTrap(pos.x, pos.y, 45);
       this.towers.push(knife);
     }
   }
