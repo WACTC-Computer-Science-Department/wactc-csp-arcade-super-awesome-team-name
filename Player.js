@@ -48,6 +48,28 @@ function hasEnemyInRange(tower, enemies) {
   return enemies.some(enemy => dist(tower.x, tower.y, enemy.x, enemy.y) <= tower.range);
 }
 
+function getTowerRowCenterY(tower) {
+  let bestRow = 1;
+  let bestDistance = Infinity;
+  for (let row = 1; row <= 5; row++) {
+    const pos = TOWER_GRID.getPosition(row, 1);
+    if (!pos) continue;
+    const d = abs(tower.y - pos.y);
+    if (d < bestDistance) {
+      bestDistance = d;
+      bestRow = row;
+    }
+  }
+  const rowPos = TOWER_GRID.getPosition(bestRow, 1);
+  return rowPos ? rowPos.y : tower.y;
+}
+
+function hasEnemyInSameRowAndRange(tower, enemies, threshold = 30) {
+  if (!enemies || enemies.length === 0) return false;
+  const rowY = getTowerRowCenterY(tower);
+  return enemies.some(enemy => abs(enemy.y - rowY) <= threshold && dist(tower.x, tower.y, enemy.x, enemy.y) <= tower.range);
+}
+
 function getSwordRowCenterY(tower) {
   let bestRow = 1;
   let bestDistance = Infinity;
@@ -85,7 +107,7 @@ class SniperTower extends GameObject {
   update(enemies, projectiles) {
     this.cooldown--; // Decrease cooldown each frame
     
-    if (this.cooldown <= 0 && hasEnemyInRange(this, enemies)) {
+    if (this.cooldown <= 0 && hasEnemyInSameRowAndRange(this, enemies)) {
       this.fire(projectiles);
       this.cooldown = this.fireRate; // Reset cooldown
     }
@@ -141,7 +163,7 @@ class PistolTower extends GameObject {
     super(x, y, size || 45);
     this.image = typeof pistolImg !== 'undefined' ? pistolImg : null;
     this.projectile = "Pistol";
-    this.range = 400;
+    this.range = 320;
     this.fireRate = 100; // Frames between shots
     this.health = 5;
     this.alive = true;
@@ -151,7 +173,7 @@ class PistolTower extends GameObject {
   update(enemies, projectiles) {
     this.cooldown--; // Decrease cooldown each frame
     
-    if (this.cooldown <= 0 && hasEnemyInRange(this, enemies)) {
+    if (this.cooldown <= 0 && hasEnemyInSameRowAndRange(this, enemies)) {
       this.fire(projectiles);
       this.cooldown = this.fireRate; // Reset cooldown
     }
@@ -274,7 +296,7 @@ class KnifeTrap extends GameObject {
 
   update(enemies) {
     this.cooldown--;
-    if (this.cooldown <= 0 && hasEnemyInRange(this, enemies)) {
+    if (this.cooldown <= 0 && hasEnemyInSameRowAndRange(this, enemies)) {
       this.fire(enemies);
       this.cooldown = this.fireRate;
     }

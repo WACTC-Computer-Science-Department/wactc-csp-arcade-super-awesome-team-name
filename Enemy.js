@@ -21,6 +21,9 @@ class Enemy extends GameObject {
     this.bobTimer = random(TWO_PI);  // Random start for variation
     this.bobAmount = 5;  // Pixels to bob up and down
     this.reachedDropPoint = false;  // Drop to y=250 once at x<=100
+    this.attackTimer = 0; // Frames until next tower attack
+    this.attackDelay = 60; // Attack once per second at 60 FPS
+    this.attackingTower = null; // Current tower target
 
     // TODO: Add additional enemy properties
     // Examples: this.aiType = 'chase', this.target = null
@@ -87,6 +90,65 @@ class Enemy extends GameObject {
     return dropping;
   }
 
+  getNearestTowerInRow() {
+    if (!window.gm || !window.gm.towers || window.gm.towers.length === 0 || !window.gm.towers[0]) {
+      return null;
+    }
+
+    let ownRowY = null;
+    let bestRowDistance = Infinity;
+    for (let row = 1; row <= 5; row++) {
+      const rowPos = TOWER_GRID.getPosition(row, 1);
+      if (!rowPos) continue;
+      const d = abs(this.y - rowPos.y);
+      if (d < bestRowDistance) {
+        bestRowDistance = d;
+        ownRowY = rowPos.y;
+      }
+    }
+    if (ownRowY === null) {
+      return null;
+    }
+
+    let nearest = null;
+    let bestDist = Infinity;
+    for (let tower of window.gm.towers) {
+      if (!tower.alive) continue;
+      if (abs(tower.y - ownRowY) > 40) continue;
+      const d = dist(this.x, this.y, tower.x, tower.y);
+      if (d < bestDist) {
+        bestDist = d;
+        nearest = tower;
+      }
+    }
+    return nearest;
+  }
+
+  handleTowerContact() {
+    const tower = this.getNearestTowerInRow();
+    if (!tower) {
+      this.attackingTower = null;
+      this.attackTimer = 0;
+      return false;
+    }
+
+    const contactDistance = (this.size + tower.size) * 0.7;
+    const distance = dist(this.x, this.y, tower.x, tower.y);
+    if (distance <= contactDistance) {
+      this.attackingTower = tower;
+      this.attackTimer--; // count down each frame while in contact
+      if (this.attackTimer <= 0) {
+        tower.takeDamage(this.damage);
+        this.attackTimer = this.attackDelay;
+      }
+      return true;
+    }
+
+    this.attackingTower = null;
+    this.attackTimer = 0;
+    return false;
+  }
+
   // TODO: Add enemy-specific methods
   // Examples: patrol(), attack(), dropLoot()
 }
@@ -109,7 +171,9 @@ class ConeBalloon extends Enemy {
   update() {
     const dropping = this.handleDropAndGameOver();
     if (!dropping) {
-      this.x -= this.speed;
+      if (!this.handleTowerContact()) {
+        this.x -= this.speed;
+      }
     }
     this.bobTimer += 0.05;  // Increment bob animation
     this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
@@ -150,7 +214,9 @@ class ConeBalloon extends Enemy {
   update() {
     const dropping = this.handleDropAndGameOver();
     if (!dropping) {
-      this.x -= this.speed;
+      if (!this.handleTowerContact()) {
+        this.x -= this.speed;
+      }
     }
     this.bobTimer += 0.05;  // Increment bob animation
     this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
@@ -179,7 +245,9 @@ class ConeBalloon extends Enemy {
  update() {
     const dropping = this.handleDropAndGameOver();
     if (!dropping) {
-      this.x -= this.speed;
+      if (!this.handleTowerContact()) {
+        this.x -= this.speed;
+      }
     }
     this.bobTimer += 0.05;  // Increment bob animation
     this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
@@ -208,7 +276,9 @@ class bucketballoon extends Enemy{
   update() {
     const dropping = this.handleDropAndGameOver();
     if (!dropping) {
-      this.x -= this.speed;
+      if (!this.handleTowerContact()) {
+        this.x -= this.speed;
+      }
     }
     this.bobTimer += 0.05;  // Increment bob animation
     this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
@@ -238,7 +308,9 @@ class bucketballoon extends Enemy{
  update(){
  const dropping = this.handleDropAndGameOver();
  if (!dropping) {
- this.x -= this.speed;
+   if (!this.handleTowerContact()) {
+     this.x -= this.speed;
+   }
  }
     this.bobTimer += 0.05;  // Increment bob animation
     this.y = this.baseY + sin(this.bobTimer) * this.bobAmount;  // Apply bobbing
