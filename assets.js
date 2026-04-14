@@ -48,7 +48,7 @@ function loadAssets() {
   schermBalloonImg = loadImage('assets/schermBalloonSprite.png');
   cursorImg = loadImage('assets/cursorSprite.png');
   projectileImg = loadImage('assets/projectileSprite.png');
-  backgroundImg = loadImage('assets/Frontyard-1.png (1).png');
+  backgroundImg = loadImage('assets/Frontyard-1.png (1) - Copy.png');
   gameOverImg = loadImage('assets/gameoversprite.gif');
   menuImg = loadImage('assets/menu image.png');
 }
