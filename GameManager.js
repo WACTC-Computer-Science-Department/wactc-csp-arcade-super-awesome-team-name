@@ -22,6 +22,7 @@ class GameManager {
     this.prepTimer = 0;
     this.prepDuration = 0;
     this.enemyQueue = [];  // Queue of enemies to spawn this wave
+    this.waveHealthBonus = 0; // Health bonus applied to non-boss balloons each wave
     this.waveDefinitions = this.getWaveDefinitions();
   }
 
@@ -66,6 +67,7 @@ class GameManager {
     this.wave = waveNum;
     this.waveState = 'prep';
     this.prepTimer = 0;
+    this.waveHealthBonus = (waveNum - 1) * 3;
     const waveDef = this.waveDefinitions[waveNum - 1];
     this.prepDuration = waveDef.prep;
     this.enemyQueue = [...waveDef.enemies];  // Copy enemy list
@@ -171,19 +173,34 @@ class GameManager {
     let x = width + 20;  // Off-screen to the right
     let y = (gridPos ? gridPos.y : height / 2) + 20;  // Use grid y-position, moved down by 20 pixels
 
-    // Spawn the correct enemy type
+    let enemy = null;
     if (enemyType === 'basic') {
-      this.enemies.push(new Basicballoon(x, y));
+      enemy = new Basicballoon(x, y);
     } else if (enemyType === 'fast') {
-      this.enemies.push(new Fastballoon(x, y));
+      enemy = new Fastballoon(x, y);
     } else if (enemyType === 'cone') {
-      this.enemies.push(new ConeBalloon(x, y));
+      enemy = new ConeBalloon(x, y);
     } else if (enemyType === 'bucket') {
-      this.enemies.push(new bucketballoon(x, y));
+      enemy = new bucketballoon(x, y);
     } else if (enemyType === 'boss') {
       // Boss spawns in middle lane
       let bossPosY = TOWER_GRID.getPosition(3, 7).y;  // Middle row
-      this.enemies.push(new SCHERMBOSS(x, bossPosY));
+      enemy = new SCHERMBOSS(x, bossPosY);
+    }
+
+    if (enemy) {
+      this.applyWaveHealthBonus(enemy);
+      this.enemies.push(enemy);
+    }
+  }
+
+  applyWaveHealthBonus(enemy) {
+    if (!enemy || enemy instanceof SCHERMBOSS) return;
+    if (typeof enemy.health === 'number') {
+      enemy.health += this.waveHealthBonus;
+      if (typeof enemy.maxHealth === 'number') {
+        enemy.maxHealth = enemy.health;
+      }
     }
   }
 

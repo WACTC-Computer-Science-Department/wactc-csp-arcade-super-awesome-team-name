@@ -163,7 +163,7 @@ class ConeBalloon extends Enemy {
   constructor(x, y) {
     super(x, y, 40, 1);  // Slightly larger and a bit faster than Basicballoon
     this.image = typeof coneBalloonImg !== 'undefined' ? coneBalloonImg : null;
-    this.health = 10;
+    this.health = 15;
     this.maxHealth = this.health;
     this.damage = 2;
   }
@@ -238,7 +238,7 @@ class ConeBalloon extends Enemy {
    constructor(x,y){
     super(x,y, 40, 1)
     this.image = typeof basicBalloonImg !== 'undefined' ? basicBalloonImg : null;
-    this.health = 15;
+    this.health = 9;
     this.maxHealth = this.health;
     this.damage = 1;
   }
@@ -269,7 +269,7 @@ class bucketballoon extends Enemy{
   constructor(x,y){
     super(x,y, 40, 1)
     this.image = typeof bucketBalloonImg !== 'undefined' ? bucketBalloonImg : null;
-    this.health = 15;
+    this.health = 20;
     this.maxHealth = this.health;
     this.damage = 2;
   }
@@ -300,9 +300,9 @@ class bucketballoon extends Enemy{
   constructor(x, y) {
     super(x, y, 80, 0.4);  // Larger and slower than regular enemies
     this.image = typeof schermBalloonImg !== 'undefined' ? schermBalloonImg : null;
-    this.health = 500;
+    this.health = 100;
     this.maxHealth = this.health;
-    this.damage = 35;
+    this.damage = 15;
   }
  
  update(){

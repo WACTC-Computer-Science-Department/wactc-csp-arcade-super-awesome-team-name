@@ -163,7 +163,7 @@ class PistolTower extends GameObject {
     super(x, y, size || 45);
     this.image = typeof pistolImg !== 'undefined' ? pistolImg : null;
     this.projectile = "Pistol";
-    this.range = 320;
+    this.range = 300;
     this.fireRate = 100; // Frames between shots
     this.health = 5;
     this.alive = true;
