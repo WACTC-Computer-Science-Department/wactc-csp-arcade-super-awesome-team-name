@@ -42,9 +42,37 @@ class Player extends GameObject {
   // TODO: Add player-specific methods
   // Examples: shoot(), dash(), useAbility(), heal()
 }
+
+function hasEnemyInRange(tower, enemies) {
+  if (!enemies || enemies.length === 0) return false;
+  return enemies.some(enemy => dist(tower.x, tower.y, enemy.x, enemy.y) <= tower.range);
+}
+
+function getSwordRowCenterY(tower) {
+  let bestRow = 1;
+  let bestDistance = Infinity;
+  for (let row = 1; row <= 5; row++) {
+    const pos = TOWER_GRID.getPosition(row, 1);
+    if (!pos) continue;
+    const d = abs(tower.y - pos.y);
+    if (d < bestDistance) {
+      bestDistance = d;
+      bestRow = row;
+    }
+  }
+  const rowPos = TOWER_GRID.getPosition(bestRow, 1);
+  return rowPos ? rowPos.y : tower.y;
+}
+
+function anyEnemyOnSwordRow(tower, enemies, threshold = 40) {
+  if (!enemies || enemies.length === 0) return false;
+  const rowY = getSwordRowCenterY(tower);
+  return enemies.some(enemy => abs(enemy.y - rowY) <= threshold);
+}
+
 class SniperTower extends GameObject {
   constructor(x, y, size) {
-    super(x, y, size || 30);
+    super(x, y, size || 45);
     this.image = typeof sniperImg !== 'undefined' ? sniperImg : null;
     this.projectile = "Sniper";
     this.range = 400;
@@ -57,14 +85,27 @@ class SniperTower extends GameObject {
   update(enemies, projectiles) {
     this.cooldown--; // Decrease cooldown each frame
     
-    if (this.cooldown <= 0) {
+    if (this.cooldown <= 0 && hasEnemyInRange(this, enemies)) {
       this.fire(projectiles);
       this.cooldown = this.fireRate; // Reset cooldown
     }
   }
 
   draw() {
+    if (this.image) {
+      noFill();
+      stroke(0, 255, 255, 80);
+      circle(this.x, this.y, this.range * 2);
+      noStroke();
       image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+    } else {
+      noFill();
+      stroke(0, 255, 255, 80);
+      circle(this.x, this.y, this.range * 2);
+      noStroke();
+      fill('#999999');
+      rect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+    }
 
     // Draw health bar
     let barWidth = 30;
@@ -97,7 +138,7 @@ class SniperTower extends GameObject {
 
 class PistolTower extends GameObject {
   constructor(x, y, size) {
-    super(x, y, size || 30);
+    super(x, y, size || 45);
     this.image = typeof pistolImg !== 'undefined' ? pistolImg : null;
     this.projectile = "Pistol";
     this.range = 400;
@@ -110,7 +151,7 @@ class PistolTower extends GameObject {
   update(enemies, projectiles) {
     this.cooldown--; // Decrease cooldown each frame
     
-    if (this.cooldown <= 0) {
+    if (this.cooldown <= 0 && hasEnemyInRange(this, enemies)) {
       this.fire(projectiles);
       this.cooldown = this.fireRate; // Reset cooldown
     }
@@ -118,6 +159,10 @@ class PistolTower extends GameObject {
 
   draw() {
     if (this.image) {
+      noFill();
+      stroke(0, 255, 255, 80);
+      circle(this.x, this.y, this.range * 2);
+      noStroke();
       image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
     } else {
       noStroke();
@@ -155,7 +200,7 @@ class PistolTower extends GameObject {
 }
 class SwordTower extends GameObject {
   constructor(x, y, size) {
-    super(x, y, size || 30);
+    super(x, y, size || 45);
     this.image = typeof swordImg !== 'undefined' ? swordImg : null;
     this.projectile = "Sword";
     this.range = 100; // Melee range
@@ -163,14 +208,16 @@ class SwordTower extends GameObject {
     this.health = 8;
     this.alive = true;
     this.cooldown = 0; // Add cooldown timer
+    this.used = false; // One-time row kill
     this.cost = 20; // Cost of the sword tower
   }
   update(enemies, projectiles) {
     this.cooldown--; // Decrease cooldown each frame
     
-    if (this.cooldown <= 0) {
+    if (!this.used && anyEnemyOnSwordRow(this, enemies)) {
       this.fire(enemies);
-      this.cooldown = this.fireRate; // Reset cooldown  
+      this.used = true;
+      this.alive = false;
     }
   }
 
@@ -201,19 +248,21 @@ class SwordTower extends GameObject {
   }
 
   fire(enemies) {
-    // Melee attack - damage nearby enemies
+    const rowY = getSwordRowCenterY(this);
     for (let enemy of enemies) {
-      let dist = dist(this.x, this.y, enemy.x, enemy.y);
-      if (dist < this.range) {
-        enemy.takeDamage(2);
+      if (abs(enemy.y - rowY) <= 40) {
+        enemy.takeDamage(enemy.health);
       }
     }
+    this.used = true;
+    this.health = 0;
+    this.alive = false;
   }
 }
 
 class KnifeTrap extends GameObject {
   constructor(x, y, size) {
-    super(x, y, size || 30);
+    super(x, y, size || 45);
     this.image = typeof swordImg !== 'undefined' ? swordImg : null;
     this.range = 120;
     this.fireRate = 45;
@@ -225,7 +274,7 @@ class KnifeTrap extends GameObject {
 
   update(enemies) {
     this.cooldown--;
-    if (this.cooldown <= 0) {
+    if (this.cooldown <= 0 && hasEnemyInRange(this, enemies)) {
       this.fire(enemies);
       this.cooldown = this.fireRate;
     }
@@ -274,7 +323,7 @@ class KnifeTrap extends GameObject {
 
 class wallTower extends GameObject {
   constructor(x, y, size) {
-    super(x, y, size || 30);
+    super(x, y, size || 45);
     this.image = typeof wallImg !== 'undefined' ? wallImg : null;
     this.health = 20;
     this.alive = true;
