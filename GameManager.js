@@ -24,6 +24,7 @@ class GameManager {
     this.enemyQueue = [];  // Queue of enemies to spawn this wave
     this.waveHealthBonus = 0; // Health bonus applied to non-boss balloons each wave
     this.waveDefinitions = this.getWaveDefinitions();
+    this.wave1FirstSpawned = false; // Tracks whether wave 1's first balloon has spawned
   }
 
   getWaveDefinitions() {
@@ -73,6 +74,9 @@ class GameManager {
     this.enemyQueue = [...waveDef.enemies];  // Copy enemy list
     this.shuffleArray(this.enemyQueue);  // Randomize spawn order
     this.spawnTimer = 0;
+    if (waveNum === 1) {
+      this.wave1FirstSpawned = false;
+    }
   }
 
   shuffleArray(arr) {
@@ -166,8 +170,12 @@ class GameManager {
     
     const enemyType = this.enemyQueue.shift();  // Get and remove first enemy from queue
     
-    // Spawn at random grid row
+    // Spawn in the middle row only for the first balloon of wave 1
     let row = floor(random(1, 6));  // Rows 1-5
+    if (this.wave === 1 && !this.wave1FirstSpawned) {
+      row = 3;
+      this.wave1FirstSpawned = true;
+    }
     let gridPos = TOWER_GRID.getPosition(row, 7);
     
     let x = width + 20;  // Off-screen to the right
@@ -195,7 +203,7 @@ class GameManager {
   }
 
   applyWaveHealthBonus(enemy) {
-    if (!enemy || enemy instanceof SCHERMBOSS) return;
+    if (!enemy || this.wave === 1 || enemy instanceof SCHERMBOSS) return;
     if (typeof enemy.health === 'number') {
       enemy.health += this.waveHealthBonus;
       if (typeof enemy.maxHealth === 'number') {
