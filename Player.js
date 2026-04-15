@@ -89,7 +89,7 @@ function getSwordRowCenterY(tower) {
 function anyEnemyOnSwordRow(tower, enemies, threshold = 40) {
   if (!enemies || enemies.length === 0) return false;
   const rowY = getSwordRowCenterY(tower);
-  return enemies.some(enemy => abs(enemy.y - rowY) <= threshold);
+  return enemies.some(enemy => abs(enemy.y - rowY) <= threshold && dist(tower.x, tower.y, enemy.x, enemy.y) <= (tower.range || Infinity));
 }
 
 class SniperTower extends GameObject {
@@ -237,8 +237,8 @@ class SwordTower extends GameObject {
     this.cooldown--; // Decrease cooldown each frame
     
     if (!this.used && anyEnemyOnSwordRow(this, enemies)) {
-      this.fire(enemies);
       this.used = true;
+      this.fire(enemies);
       this.alive = false;
     }
   }
@@ -272,11 +272,11 @@ class SwordTower extends GameObject {
   fire(enemies) {
     const rowY = getSwordRowCenterY(this);
     for (let enemy of enemies) {
-      if (abs(enemy.y - rowY) <= 40) {
+      if (abs(enemy.y - rowY) <= 45) {
         enemy.takeDamage(enemy.health);
+        enemy.alive = false;
       }
     }
-    this.used = true;
     this.health = 0;
     this.alive = false;
   }
