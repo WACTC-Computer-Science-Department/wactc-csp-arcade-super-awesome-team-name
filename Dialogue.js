@@ -1,51 +1,60 @@
-//make your dialogue here ok
-class DialogueNode:
-    def __init__(self, text, choices=None):
-        self.text = text
-        self.choices = choices or []  # list of (choice_text, next_node)
+// Simple dialogue system in JavaScript
+class DialogueNode {
+  constructor(text, choices = []) {
+    this.text = text;
+    this.choices = choices; // array of { text, next }
+  }
 
-    def display(self):
-        print("\n" + self.text)
-        for i, (choice_text, _) in enumerate(self.choices):
-            print(f"{i + 1}. {choice_text}")
+  display() {
+    console.log(`\n${this.text}`);
+    this.choices.forEach((choice, index) => {
+      console.log(`${index + 1}. ${choice.text}`);
+    });
+  }
 
-    def choose(self, index):
-        if 0 <= index < len(self.choices):
-            return self.choices[index][1]
-        else:
-            print("Invalid choice.")
-            return self
+  choose(index) {
+    if (index >= 0 && index < this.choices.length) {
+      return this.choices[index].next;
+    }
 
+    console.warn('Invalid choice.');
+    return this;
+  }
+}
 
-# Build dialogue tree
-end_node = DialogueNode("The stranger walks away. Conversation over.")
+const endNode = new DialogueNode('The stranger walks away. Conversation over.');
+const node2 = new DialogueNode('Stranger: Not many people come here. What do you want?', [
+  { text: 'Just passing by.', next: endNode },
+  { text: 'Looking for trouble.', next: endNode },
+]);
+const startNode = new DialogueNode('You see a mysterious stranger.', [
+  { text: 'Approach them.', next: node2 },
+  { text: 'Ignore them.', next: endNode },
+]);
 
-node2 = DialogueNode(
-    "Stranger: Not many people come here. What do you want?",
-    [
-        ("Just passing by.", end_node),
-        ("Looking for trouble.", end_node),
-    ]
-)
+function runDialogue(rootNode) {
+  let currentNode = rootNode;
 
-start_node = DialogueNode(
-    "You see a mysterious stranger.",
-    [
-        ("Approach them.", node2),
-        ("Ignore them.", end_node),
-    ]
-)
+  while (currentNode) {
+    currentNode.display();
 
+    if (!currentNode.choices.length) {
+      break;
+    }
 
-# Run dialogue
-current_node = start_node
+    const choiceInput = window.prompt('Choose a dialogue option (1-' + currentNode.choices.length + '):');
+    const choiceIndex = Number(choiceInput) - 1;
 
-while current_node:
-    current_node.display()
-    if not current_node.choices:
-        break
+    if (Number.isNaN(choiceIndex)) {
+      alert('Please enter a valid number.');
+      continue;
+    }
 
-    choice = int(input("Choose: ")) - 1
-    current_node = current_node.choose(choice)
+    currentNode = currentNode.choose(choiceIndex);
+  }
+}
+
+// Example invocation (uncomment to run in a browser environment):
+// runDialogue(startNode);
 
 
