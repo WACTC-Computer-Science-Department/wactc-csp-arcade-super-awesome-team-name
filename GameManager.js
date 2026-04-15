@@ -11,6 +11,7 @@ class GameManager {
     this.projectiles = [];
     this.towers = [];
     this.score = 0;
+    this.money = 100;
     this.highScore = 0;
     this.wave = 1;
     this.spawnTimer = 0;
@@ -52,6 +53,7 @@ class GameManager {
     this.projectiles = [];
     this.towers = [];
     this.score = 0;
+    this.money = 100;
     this.wave = 1;
     this.gameState = 'playing';
     this.waveState = 'prep';
@@ -108,7 +110,7 @@ class GameManager {
         this.moneyDrops[i].update();
       }
       if (this.moneyDrops[i].alive && dist(this.player.x, this.player.y, this.moneyDrops[i].x, this.moneyDrops[i].y) <= this.moneyDrops[i].size) {
-        this.score += this.moneyDrops[i].value;
+        this.money += this.moneyDrops[i].value;
         this.moneyDrops[i].alive = false;
       }
     }
@@ -293,6 +295,12 @@ class GameManager {
 
     const tower = this.createTower(type, position.x, position.y);
     if (!tower) return false;
+    if (typeof tower.cost === 'number' && this.money < tower.cost) {
+      return false;
+    }
+    if (typeof tower.cost === 'number' && tower.cost > 0) {
+      this.money -= tower.cost;
+    }
 
     this.towers.push(tower);
     return true;
