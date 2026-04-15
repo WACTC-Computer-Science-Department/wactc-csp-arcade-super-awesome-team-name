@@ -25,6 +25,7 @@ class GameManager {
     this.waveHealthBonus = 0; // Health bonus applied to non-boss balloons each wave
     this.waveDefinitions = this.getWaveDefinitions();
     this.wave1FirstSpawned = false; // Tracks whether wave 1's first balloon has spawned
+    this.moneyDrops = [];
   }
 
   getWaveDefinitions() {
@@ -56,6 +57,7 @@ class GameManager {
     this.waveState = 'prep';
     this.prepTimer = 0;
     this.spawnAutoKnives();
+    this.moneyDrops = [];
     this.startWave(1);
   }
 
@@ -93,10 +95,21 @@ class GameManager {
     // Update player
     this.player.update();
 
-    // Update towers so they can attack enemies and block paths
+    // Update towers so they can attack enemies, generate drops, and block paths
     for (let i = 0; i < this.towers.length; i++) {
       if (typeof this.towers[i].update === 'function') {
         this.towers[i].update(this.enemies, this.projectiles);
+      }
+    }
+
+    // Update money drops and collect any hovered by the player cursor
+    for (let i = 0; i < this.moneyDrops.length; i++) {
+      if (typeof this.moneyDrops[i].update === 'function') {
+        this.moneyDrops[i].update();
+      }
+      if (this.moneyDrops[i].alive && dist(this.player.x, this.player.y, this.moneyDrops[i].x, this.moneyDrops[i].y) <= this.moneyDrops[i].size) {
+        this.score += this.moneyDrops[i].value;
+        this.moneyDrops[i].alive = false;
       }
     }
 
@@ -159,6 +172,10 @@ class GameManager {
 
     for (let i = 0; i < this.projectiles.length; i++) {
       this.projectiles[i].draw();
+    }
+
+    for (let i = 0; i < this.moneyDrops.length; i++) {
+      this.moneyDrops[i].draw();
     }
 
     // Draw player last (on top)
@@ -312,6 +329,13 @@ class GameManager {
     for (let i = this.projectiles.length - 1; i >= 0; i--) {
       if (!this.projectiles[i].alive) {
         this.projectiles.splice(i, 1);
+      }
+    }
+
+    // Remove collected or expired money drops
+    for (let i = this.moneyDrops.length - 1; i >= 0; i--) {
+      if (!this.moneyDrops[i].alive) {
+        this.moneyDrops.splice(i, 1);
       }
     }
 
