@@ -1,60 +1,82 @@
-// Simple dialogue system in JavaScript
-class DialogueNode {
-  constructor(text, choices = []) {
-    this.text = text;
-    this.choices = choices; // array of { text, next }
+// =======================
+// Dialogue System (Game-Friendly)
+// =======================
+
+   class Dialogue {
+  constructor(lines = []) {
+    this.lines = lines;
+    this.currentLine = 0;
+    this.currentChar = 0;
+    this.isTyping = false;
+    this.finished = false;
+
+    this.displayText = "";
+    this.typingSpeed = 30;
+    this.timer = 0;
   }
 
-  display() {
-    console.log(`\n${this.text}`);
-    this.choices.forEach((choice, index) => {
-      console.log(`${index + 1}. ${choice.text}`);
-    });
+  start(lines) {
+    this.lines = lines;
+    this.currentLine = 0;
+    this.currentChar = 0;
+    this.finished = false;
+    this.displayText = "";
+    this.isTyping = true;
   }
 
-  choose(index) {
-    if (index >= 0 && index < this.choices.length) {
-      return this.choices[index].next;
+  update(deltaTime) {
+    if (this.finished) return;
+
+    this.timer += deltaTime;
+
+    if (this.isTyping && this.timer >= this.typingSpeed) {
+      this.timer = 0;
+
+      const line = this.lines[this.currentLine];
+      this.displayText += line[this.currentChar];
+      this.currentChar++;
+
+      if (this.currentChar >= line.length) {
+        this.isTyping = false;
+      }
+    }
+  }
+
+  next() {
+    if (this.finished) return;
+
+    if (this.isTyping) {
+      // Skip typing
+      this.displayText = this.lines[this.currentLine];
+      this.isTyping = false;
+      return;
     }
 
-    console.warn('Invalid choice.');
-    return this;
+    this.currentLine++;
+
+    if (this.currentLine >= this.lines.length) {
+      this.finished = true;
+      return;
+    }
+
+    this.displayText = "";
+    this.currentChar = 0;
+    this.isTyping = true;
+  }
+
+  draw(ctx) {
+    if (this.finished) return;
+
+    // Draw box
+    ctx.fillStyle = "black";
+    ctx.fillRect(50, 400, 700, 100);
+
+    ctx.strokeStyle = "white";
+    ctx.strokeRect(50, 400, 700, 100);
+
+    // Draw text
+    ctx.fillStyle = "white";
+    ctx.font = "16px Arial";
+    ctx.fillText(this.displayText, 60, 440);
   }
 }
-
-const endNode = new DialogueNode('The stranger walks away. Conversation over.');
-const node2 = new DialogueNode('Stranger: Not many people come here. What do you want?', [
-  { text: 'Just passing by.', next: endNode },
-  { text: 'Looking for trouble.', next: endNode },
-]);
-const startNode = new DialogueNode('You see a mysterious stranger.', [
-  { text: 'Approach them.', next: node2 },
-  { text: 'Ignore them.', next: endNode },
-]);
-
-function runDialogue(rootNode) {
-  let currentNode = rootNode;
-
-  while (currentNode) {
-    currentNode.display();
-
-    if (!currentNode.choices.length) {
-      break;
-    }
-
-    const choiceInput = window.prompt('Choose a dialogue option (1-' + currentNode.choices.length + '):');
-    const choiceIndex = Number(choiceInput) - 1;
-
-    if (Number.isNaN(choiceIndex)) {
-      alert('Please enter a valid number.');
-      continue;
-    }
-
-    currentNode = currentNode.choose(choiceIndex);
-  }
-}
-
-// Example invocation (uncomment to run in a browser environment):
-// runDialogue(startNode);
-
-
