@@ -1,60 +1,87 @@
-// Simple dialogue system in JavaScript
-class DialogueNode {
-  constructor(text, choices = []) {
-    this.text = text;
-    this.choices = choices; // array of { text, next }
-  }
+// =======================
+// Dialogue Data
+// =======================
+const dialogueLines = [
+  "Hey there.",
+  "This is a simple dialogue system.",
+  "Click to move through the text.",
+  "If you click while text is typing...",
+  "It will instantly finish the line.",
+  "And when it's over...",
+  "The dialogue disappears."
+];
 
-  display() {
-    console.log(`\n${this.text}`);
-    this.choices.forEach((choice, index) => {
-      console.log(`${index + 1}. ${choice.text}`);
-    });
-  }
+// =======================
+// Variables
+// =======================
+let currentLine = 0;
+let currentChar = 0;
+let isTyping = false;
+let typingInterval = null;
 
-  choose(index) {
-    if (index >= 0 && index < this.choices.length) {
-      return this.choices[index].next;
-    }
+const dialogueBox = document.getElementById("dialogueBox");
+const dialogueText = document.getElementById("dialogueText");
 
-    console.warn('Invalid choice.');
-    return this;
-  }
+// =======================
+// Start Dialogue
+// =======================
+function startDialogue() {
+  currentLine = 0;
+  dialogueBox.classList.remove("hidden");
+  typeLine();
 }
 
-const endNode = new DialogueNode('The stranger walks away. Conversation over.');
-const node2 = new DialogueNode('Stranger: Not many people come here. What do you want?', [
-  { text: 'Just passing by.', next: endNode },
-  { text: 'Looking for trouble.', next: endNode },
-]);
-const startNode = new DialogueNode('You see a mysterious stranger.', [
-  { text: 'Approach them.', next: node2 },
-  { text: 'Ignore them.', next: endNode },
-]);
+// =======================
+// Typewriter Effect
+// =======================
+function typeLine() {
+  dialogueText.textContent = "";
+  currentChar = 0;
+  isTyping = true;
 
-function runDialogue(rootNode) {
-  let currentNode = rootNode;
+  const line = dialogueLines[currentLine];
 
-  while (currentNode) {
-    currentNode.display();
+  clearInterval(typingInterval);
 
-    if (!currentNode.choices.length) {
-      break;
+  typingInterval = setInterval(() => {
+    dialogueText.textContent += line[currentChar];
+    currentChar++;
+
+    if (currentChar >= line.length) {
+      clearInterval(typingInterval);
+      isTyping = false;
     }
-
-    const choiceInput = window.prompt('Choose a dialogue option (1-' + currentNode.choices.length + '):');
-    const choiceIndex = Number(choiceInput) - 1;
-
-    if (Number.isNaN(choiceIndex)) {
-      alert('Please enter a valid number.');
-      continue;
-    }
-
-    currentNode = currentNode.choose(choiceIndex);
-  }
+  }, 30);
 }
 
-// Example invocation (uncomment to run in a browser environment):
-// runDialogue(startNode);
+// =======================
+// Click Handling
+// =======================
+dialogueBox.addEventListener("click", () => {
+  if (isTyping) {
+    clearInterval(typingInterval);
+    dialogueText.textContent = dialogueLines[currentLine];
+    isTyping = false;
+    return;
+  }
 
+  currentLine++;
 
+  if (currentLine < dialogueLines.length) {
+    typeLine();
+  } else {
+    endDialogue();
+  }
+});
+
+// =======================
+// End Dialogue
+// =======================
+function endDialogue() {
+  dialogueBox.classList.add("hidden");
+}
+
+// =======================
+// Start on load
+// =======================
+window.addEventListener("load", startDialogue);
