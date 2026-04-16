@@ -56,8 +56,8 @@ function drawHUD(gm) {
   const selectedTower = gm.player && gm.player.heldTower ? gm.player.heldTower : 'None';
   text('Selected: ' + selectedTower, 10, 110);
   textSize(12);
-  text('Items: 1=Sniper $50   2=Pistol $30', 10, 130);
-  text('       4=Wall $10     5=Money $50', 10, 148);
+  text('Items: 1=Sniper $50   2=Pistol $25', 10, 130);
+  text('       4=Wall $1000     5=Money $100', 10, 148);
   text('Click to place.', 10, 166);
 
   // TODO: Add more HUD elements

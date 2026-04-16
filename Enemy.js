@@ -24,6 +24,7 @@ class Enemy extends GameObject {
     this.attackTimer = 0; // Frames until next tower attack
     this.attackDelay = 60; // Attack once per second at 60 FPS
     this.attackingTower = null; // Current tower target
+    this.reward = 0; // money reward for killing this enemy
 
     // TODO: Add additional enemy properties
     // Examples: this.aiType = 'chase', this.target = null
@@ -59,9 +60,13 @@ class Enemy extends GameObject {
   }
 
   takeDamage(amount) {
+    const wasAlive = this.alive;
     this.health -= amount;
-    if (this.health <= 0) {
+    if (this.health <= 0 && wasAlive) {
       this.alive = false;
+      if (window.gm && typeof window.gm.money === 'number') {
+        window.gm.money += this.reward || 0;
+      }
     }
   }
 
@@ -166,6 +171,7 @@ class ConeBalloon extends Enemy {
     this.health = 15;
     this.maxHealth = this.health;
     this.damage = 2;
+    this.reward = 10;
   }
 
   update() {
@@ -209,6 +215,7 @@ class ConeBalloon extends Enemy {
     this.health = 5;
     this.maxHealth = this.health;
     this.damage = 3;
+    this.reward = 15;
   }
 
   update() {
@@ -241,6 +248,7 @@ class ConeBalloon extends Enemy {
     this.health = 9;
     this.maxHealth = this.health;
     this.damage = 1;
+    this.reward = 5;
   }
  update() {
     const dropping = this.handleDropAndGameOver();
@@ -272,6 +280,7 @@ class bucketballoon extends Enemy{
     this.health = 20;
     this.maxHealth = this.health;
     this.damage = 2;
+    this.reward = 15;
   }
   update() {
     const dropping = this.handleDropAndGameOver();
