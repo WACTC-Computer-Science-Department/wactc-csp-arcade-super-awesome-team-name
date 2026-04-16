@@ -1,87 +1,82 @@
 // =======================
-// Dialogue Data
+// Dialogue System (Game-Friendly)
 // =======================
-const dialogueLines = [
-  "Hey there.",
-  "This is a simple dialogue system.",
-  "Click to move through the text.",
-  "If you click while text is typing...",
-  "It will instantly finish the line.",
-  "And when it's over...",
-  "The dialogue disappears."
-];
 
-// =======================
-// Variables
-// =======================
-let currentLine = 0;
-let currentChar = 0;
-let isTyping = false;
-let typingInterval = null;
+   class Dialogue {
+  constructor(lines = []) {
+    this.lines = lines;
+    this.currentLine = 0;
+    this.currentChar = 0;
+    this.isTyping = false;
+    this.finished = false;
 
-const dialogueBox = document.getElementById("dialogueBox");
-const dialogueText = document.getElementById("dialogueText");
+    this.displayText = "";
+    this.typingSpeed = 30;
+    this.timer = 0;
+  }
 
-// =======================
-// Start Dialogue
-// =======================
-function startDialogue() {
-  currentLine = 0;
-  dialogueBox.classList.remove("hidden");
-  typeLine();
-}
+  start(lines) {
+    this.lines = lines;
+    this.currentLine = 0;
+    this.currentChar = 0;
+    this.finished = false;
+    this.displayText = "";
+    this.isTyping = true;
+  }
 
-// =======================
-// Typewriter Effect
-// =======================
-function typeLine() {
-  dialogueText.textContent = "";
-  currentChar = 0;
-  isTyping = true;
+  update(deltaTime) {
+    if (this.finished) return;
 
-  const line = dialogueLines[currentLine];
+    this.timer += deltaTime;
 
-  clearInterval(typingInterval);
+    if (this.isTyping && this.timer >= this.typingSpeed) {
+      this.timer = 0;
 
-  typingInterval = setInterval(() => {
-    dialogueText.textContent += line[currentChar];
-    currentChar++;
+      const line = this.lines[this.currentLine];
+      this.displayText += line[this.currentChar];
+      this.currentChar++;
 
-    if (currentChar >= line.length) {
-      clearInterval(typingInterval);
-      isTyping = false;
+      if (this.currentChar >= line.length) {
+        this.isTyping = false;
+      }
     }
-  }, 30);
-}
-
-// =======================
-// Click Handling
-// =======================
-dialogueBox.addEventListener("click", () => {
-  if (isTyping) {
-    clearInterval(typingInterval);
-    dialogueText.textContent = dialogueLines[currentLine];
-    isTyping = false;
-    return;
   }
 
-  currentLine++;
+  next() {
+    if (this.finished) return;
 
-  if (currentLine < dialogueLines.length) {
-    typeLine();
-  } else {
-    endDialogue();
+    if (this.isTyping) {
+      // Skip typing
+      this.displayText = this.lines[this.currentLine];
+      this.isTyping = false;
+      return;
+    }
+
+    this.currentLine++;
+
+    if (this.currentLine >= this.lines.length) {
+      this.finished = true;
+      return;
+    }
+
+    this.displayText = "";
+    this.currentChar = 0;
+    this.isTyping = true;
   }
-});
 
-// =======================
-// End Dialogue
-// =======================
-function endDialogue() {
-  dialogueBox.classList.add("hidden");
+  draw(ctx) {
+    if (this.finished) return;
+
+    // Draw box
+    ctx.fillStyle = "black";
+    ctx.fillRect(50, 400, 700, 100);
+
+    ctx.strokeStyle = "white";
+    ctx.strokeRect(50, 400, 700, 100);
+
+    // Draw text
+    ctx.fillStyle = "white";
+    ctx.font = "16px Arial";
+    ctx.fillText(this.displayText, 60, 440);
+  }
 }
-
-// =======================
-// Start on load
-// =======================
-window.addEventListener("load", startDialogue);
