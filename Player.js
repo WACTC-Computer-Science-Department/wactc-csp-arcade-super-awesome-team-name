@@ -231,7 +231,6 @@ class SwordTower extends GameObject {
     this.alive = true;
     this.cooldown = 0; // Add cooldown timer
     this.used = false; // One-time row kill
-    this.cost = 20; // Cost of the sword tower
   }
   update(enemies, projectiles) {
     this.cooldown--; // Decrease cooldown each frame
@@ -277,71 +276,22 @@ class SwordTower extends GameObject {
         enemy.alive = false;
       }
     }
+
+    if (window.gm && Array.isArray(window.gm.towers)) {
+      for (let tower of window.gm.towers) {
+        if (!tower || !tower.alive) continue;
+        if (abs(getTowerRowCenterY(tower) - rowY) <= 10) {
+          tower.alive = false;
+        }
+      }
+    }
+
     this.health = 0;
     this.alive = false;
   }
 }
 
-class KnifeTrap extends GameObject {
-  constructor(x, y, size) {
-    super(x, y, size || 45);
-    this.image = typeof swordImg !== 'undefined' ? swordImg : null;
-    this.range = 120;
-    this.fireRate = 45;
-    this.health = 10;
-    this.alive = true;
-    this.cooldown = 0;
-    this.cost = 15;
-  }
-
-  update(enemies) {
-    this.cooldown--;
-    if (this.cooldown <= 0 && hasEnemyInSameRowAndRange(this, enemies)) {
-      this.fire(enemies);
-      this.cooldown = this.fireRate;
-    }
-  }
-
-  draw() {
-    if (this.image) {
-      image(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
-    } else {
-      noStroke();
-      fill('#ffcc00');
-      rect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
-      fill('#ffffff');
-      triangle(
-        this.x - this.size / 2, this.y + this.size / 2,
-        this.x, this.y - this.size / 2,
-        this.x + this.size / 2, this.y + this.size / 2
-      );
-    }
-
-    let barWidth = 40;
-    let healthPercent = this.health / 10;
-    fill(100);
-    rect(this.x - barWidth / 2, this.y - this.size - 12, barWidth, 4);
-    fill(0, 255, 100);
-    rect(this.x - barWidth / 2, this.y - this.size - 12, barWidth * healthPercent, 4);
-  }
-
-  takeDamage(amount) {
-    this.health -= amount;
-    if (this.health <= 0) {
-      this.health = 0;
-      this.alive = false;
-    }
-  }
-
-  fire(enemies) {
-    for (let enemy of enemies) {
-      let distToEnemy = dist(this.x, this.y, enemy.x, enemy.y);
-      if (distToEnemy < this.range) {
-        enemy.takeDamage(3);
-      }
-    }
-  }
-}
+class KnifeTrap extends SwordTower {}
 
 class wallTower extends GameObject {
   constructor(x, y, size) {
@@ -349,7 +299,7 @@ class wallTower extends GameObject {
     this.image = typeof wallImg !== 'undefined' ? wallImg : null;
     this.health = 20;
     this.alive = true;
-    this.cost = 10; // Cost of the wall tower
+    this.cost = 1000; // Cost of the wall tower
   }
   update() {
     // Walls don't do anything, just sit there and block enemies

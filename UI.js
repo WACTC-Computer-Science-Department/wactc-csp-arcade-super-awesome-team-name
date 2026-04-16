@@ -33,30 +33,32 @@ function drawMenu(gm) {
 
 function drawHUD(gm) {
   
-  fill(0, 0, 0, 150); 
+  fill(0, 0, 0, 170); 
   noStroke();
-  rect(5, 5, 200, 130); 
+  rect(5, 5, 240, 175, 12); 
   
   fill('#ffffff');
   textAlign(LEFT, TOP);
   textSize(14);
   text('Score: ' + gm.score, 10, 10);
-  text('Wave: ' + gm.wave + '/8', 10, 30);
-  text('Enemies: ' + gm.enemies.length, 10, 50);
+  text('Money: $' + gm.money, 10, 30);
+  text('Wave: ' + gm.wave + '/8', 10, 50);
+  text('Enemies: ' + gm.enemies.length, 10, 70);
   
   // Show prep time or wave state
   if (gm.waveState === 'prep') {
     let secondsLeft = ceil((gm.prepDuration - gm.prepTimer) / 60);
-    text('Prep Time: ' + secondsLeft + 's', 10, 70);
+    text('Prep Time: ' + secondsLeft + 's', 10, 90);
   } else if (gm.waveState === 'spawning') {
-    text('State: Spawning...', 10, 70);
+    text('State: Spawning...', 10, 90);
   }
 
   const selectedTower = gm.player && gm.player.heldTower ? gm.player.heldTower : 'None';
-  text('Selected: ' + selectedTower, 10, 90);
+  text('Selected: ' + selectedTower, 10, 110);
   textSize(12);
-  text('Press 1=sniper 2=pistol 4=wall 5=money', 10, 110);
-  text('Click to place.', 10, 125);
+  text('Items: 1=Sniper $50   2=Pistol $30', 10, 130);
+  text('       4=Wall $10     5=Money $50', 10, 148);
+  text('Click to place.', 10, 166);
 
   // TODO: Add more HUD elements
   // Ideas: health bar, minimap, wave progress, combo counter

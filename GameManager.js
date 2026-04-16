@@ -11,6 +11,7 @@ class GameManager {
     this.projectiles = [];
     this.towers = [];
     this.score = 0;
+    this.money = 100;
     this.highScore = 0;
     this.wave = 1;
     this.spawnTimer = 0;
@@ -25,6 +26,7 @@ class GameManager {
     this.waveHealthBonus = 0; // Health bonus applied to non-boss balloons each wave
     this.waveDefinitions = this.getWaveDefinitions();
     this.wave1FirstSpawned = false; // Tracks whether wave 1's first balloon has spawned
+    this.moneyDrops = [];
   }
 
   getWaveDefinitions() {
@@ -51,11 +53,13 @@ class GameManager {
     this.projectiles = [];
     this.towers = [];
     this.score = 0;
+    this.money = 100;
     this.wave = 1;
     this.gameState = 'playing';
     this.waveState = 'prep';
     this.prepTimer = 0;
     this.spawnAutoKnives();
+    this.moneyDrops = [];
     this.startWave(1);
   }
 
@@ -93,10 +97,21 @@ class GameManager {
     // Update player
     this.player.update();
 
-    // Update towers so they can attack enemies and block paths
+    // Update towers so they can attack enemies, generate drops, and block paths
     for (let i = 0; i < this.towers.length; i++) {
       if (typeof this.towers[i].update === 'function') {
         this.towers[i].update(this.enemies, this.projectiles);
+      }
+    }
+
+    // Update money drops and collect any hovered by the player cursor
+    for (let i = 0; i < this.moneyDrops.length; i++) {
+      if (typeof this.moneyDrops[i].update === 'function') {
+        this.moneyDrops[i].update();
+      }
+      if (this.moneyDrops[i].alive && dist(this.player.x, this.player.y, this.moneyDrops[i].x, this.moneyDrops[i].y) <= this.moneyDrops[i].size) {
+        this.money += this.moneyDrops[i].value;
+        this.moneyDrops[i].alive = false;
       }
     }
 
@@ -161,6 +176,10 @@ class GameManager {
       this.projectiles[i].draw();
     }
 
+    for (let i = 0; i < this.moneyDrops.length; i++) {
+      this.moneyDrops[i].draw();
+    }
+
     // Draw player last (on top)
     this.player.draw();
   }
@@ -220,7 +239,7 @@ class GameManager {
     } else if (type === 'sword') {
       return new SwordTower(x, y, 45);
     } else if (type === 'knife') {
-      return new KnifeTrap(x, y, 45);
+      return new SwordTower(x, y, 45);
     } else if (type === 'wall') {
       return new wallTower(x, y, 45);
     } else if (type === 'bigMoney') {
@@ -237,7 +256,7 @@ class GameManager {
     for (let row = 1; row <= 5; row++) {
       const pos = TOWER_GRID.getPosition(row, 1);
       if (!pos) continue;
-      const knife = new KnifeTrap(pos.x, pos.y, 45);
+      const knife = new SwordTower(pos.x, pos.y, 45);
       this.towers.push(knife);
     }
   }
@@ -276,6 +295,12 @@ class GameManager {
 
     const tower = this.createTower(type, position.x, position.y);
     if (!tower) return false;
+    if (typeof tower.cost === 'number' && this.money < tower.cost) {
+      return false;
+    }
+    if (typeof tower.cost === 'number' && tower.cost > 0) {
+      this.money -= tower.cost;
+    }
 
     this.towers.push(tower);
     return true;
@@ -312,6 +337,13 @@ class GameManager {
     for (let i = this.projectiles.length - 1; i >= 0; i--) {
       if (!this.projectiles[i].alive) {
         this.projectiles.splice(i, 1);
+      }
+    }
+
+    // Remove collected or expired money drops
+    for (let i = this.moneyDrops.length - 1; i >= 0; i--) {
+      if (!this.moneyDrops[i].alive) {
+        this.moneyDrops.splice(i, 1);
       }
     }
 
