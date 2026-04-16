@@ -7,7 +7,7 @@ class BigMoney extends GameObject {
     this.dropInterval = 180; // Frames between money drops
     this.dropTimer = this.dropInterval;
     this.moneyAmount = 10; // Amount of money dropped each time
-    this.cost = 50; // Cost of the BigMoney tower
+    this.cost = 100; // Cost of the BigMoney tower
   }
 
   update() {

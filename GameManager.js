@@ -239,7 +239,7 @@ class GameManager {
     } else if (type === 'sword') {
       return new SwordTower(x, y, 45);
     } else if (type === 'knife') {
-      return new KnifeTrap(x, y, 45);
+      return new SwordTower(x, y, 45);
     } else if (type === 'wall') {
       return new wallTower(x, y, 45);
     } else if (type === 'bigMoney') {
@@ -256,7 +256,7 @@ class GameManager {
     for (let row = 1; row <= 5; row++) {
       const pos = TOWER_GRID.getPosition(row, 1);
       if (!pos) continue;
-      const knife = new KnifeTrap(pos.x, pos.y, 45);
+      const knife = new SwordTower(pos.x, pos.y, 45);
       this.towers.push(knife);
     }
   }
